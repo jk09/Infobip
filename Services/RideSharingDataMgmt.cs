@@ -1,4 +1,5 @@
 ﻿using Infobip.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infobip.Services
 {
@@ -20,9 +21,16 @@ namespace Infobip.Services
 
         public async Task<IEnumerable<Car>> GetAvailableCars()
         {
-            var leftJoin = _dbContext.Cars.GroupJoin(_dbContext.TravelPlans, car => car.Id, plan => plan.CarId, (car, plans) => new { car, plans }).Where(x => x.plans.Any()).Select(x => x.car);
 
-            throw new NotImplementedException();
+            var queryCarsLeftJoinPlans = from car in _dbContext.Set<Car>()
+                                         join plan in _dbContext.Set<TravelPlan>()
+                                             on car.Id equals plan.Id into grouping
+                                         from grp in grouping.DefaultIfEmpty()
+                                         where grp != null
+                                         select car;
+
+
+            return await queryCarsLeftJoinPlans.ToListAsync();
         }
     }
 
