@@ -26,7 +26,22 @@ namespace Infobip.Services
             return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<Employee>> GetUnallocatedEmployees()
+        public async Task<int> GetEmployeesCount()
+        {
+            return await _db.Employees.CountAsync();
+        }
+
+        public async Task<int> GetCarsCount()
+        {
+            return await _db.Cars.CountAsync();
+        }
+
+        public async Task<int> GetTravelPlansCount()
+        {
+            return await _db.TravelPlans.CountAsync();
+        }
+
+        public async Task<IEnumerable<Employee>> GetUnallocatedEmployees(int limit)
         {
             var query = from emp in _db.Employees
                         join plan in _db.TravelPlans on emp.Id equals plan.EmployeeId into joinGroup
