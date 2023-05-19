@@ -16,10 +16,7 @@ namespace Infobip.Services
         {
 
             var queryCarsLeftJoinPlans = from car in _dbContext.Set<Car>()
-                                         join plan in _dbContext.Set<TravelPlan>()
-                                             on car.Id equals plan.Id into grouping
-                                         from grp in grouping.DefaultIfEmpty()
-                                         where grp != null
+                                         join plan in _dbContext.Set<TravelPlan>() on car.Id equals plan.Id 
                                          select car;
 
 
