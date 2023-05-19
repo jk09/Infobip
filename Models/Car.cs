@@ -1,6 +1,6 @@
 ﻿namespace Infobip.Models
 {
-    public class Carpool
+    public class Car
     {
         public int Id { get; set; }
         public string Name { get; set; }
