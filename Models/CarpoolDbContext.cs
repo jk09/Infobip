@@ -112,7 +112,8 @@ namespace Infobip.Models
 };
         private void SeedData(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Car>().HasData(new Car() { Id=1,  })
+            modelBuilder.Entity<Car>().HasData(GetRandomCarData());
+            modelBuilder.Entity<Employee>().HasData(GetRandomEmployeeData());
         }
 
         private IEnumerable<Car> GetRandomCarData()
@@ -123,7 +124,7 @@ namespace Infobip.Models
             for(int i = 0; i < count; i++)
             {
                 var carName = CAR_MODELS[i] + " of " + FIRST_NAMES[i];
-                var car = new Car() { Id = i, Name = carName, Color = COLORS[i], CarType = CAR_MODELS[i], NumberSeats = rnd.Next(2, 7), Plate = LICENSE_PLATES[i] };
+                var car = new Car() { Id = i+1, Name = carName, Color = COLORS[i], CarType = CAR_MODELS[i], NumberSeats = rnd.Next(2, 7), Plate = LICENSE_PLATES[i] };
                 yield return car;
             }
         }
@@ -135,7 +136,7 @@ namespace Infobip.Models
             var count=EMPLOYEE_NAMES.Length;
             for(int i=0; i < count; i++)
             {
-                var employee = new Employee() { Id = i, IsDriver = rnd.Next(2) == 0 ? false : true, Name = EMPLOYEE_NAMES[i] };
+                var employee = new Employee() { Id = i+1, IsDriver = rnd.Next(2) == 0 ? false : true, Name = EMPLOYEE_NAMES[i] };
                 yield return employee;
             }
 
