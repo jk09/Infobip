@@ -12,15 +12,30 @@ namespace Infobip.Services
             _db = db;
         }
 
-        public async Task<IEnumerable<Car>> GetAvailableCars()
+        public async Task<IEnumerable<Car>> GetUnallocatedCars()
         {
 
-            var queryCarsLeftJoinPlans = from car in _db.Cars
-                                         join plan in _db.TravelPlans on car.Id equals plan.Id 
-                                         select car;
+            var query = from car in _db.Cars
+                        join plan in _db.TravelPlans on car.Id equals plan.CarId into joinGroup
+                        from joinGrp in joinGroup.DefaultIfEmpty()
+                        where joinGrp == null
+                        select car;
 
 
-            return await queryCarsLeftJoinPlans.ToListAsync();
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Employee>> GetUnallocatedEmployees()
+        {
+            var query = from emp in _db.Employees
+                        join plan in _db.TravelPlans on emp.Id equals plan.EmployeeId into joinGroup
+                        from joinGrp in joinGroup.DefaultIfEmpty()
+                        where joinGrp == null
+                        select emp;
+
+            return await query.ToListAsync();
+
         }
 
         public async Task AddNewTravelPlan(TravelPlan plan)
