@@ -115,15 +115,30 @@ namespace Infobip.Models
             modelBuilder.Entity<Car>().HasData(new Car() { Id=1,  })
         }
 
-        private IEnumerable<Car> GetRandomCarData(int count)
+        private IEnumerable<Car> GetRandomCarData()
         {
             var rnd = new Random();
 
+            var count = CAR_MODELS.Length;
             for(int i = 0; i < count; i++)
             {
-                var car = new Car() { Id=i, CarType };
+                var carName = CAR_MODELS[i] + " of " + FIRST_NAMES[i];
+                var car = new Car() { Id = i, Name = carName, Color = COLORS[i], CarType = CAR_MODELS[i], NumberSeats = rnd.Next(2, 7), Plate = LICENSE_PLATES[i] };
                 yield return car;
             }
+        }
+
+        private IEnumerable<Employee> GetRandomEmployeeData()
+        {
+            var rnd = new Random();
+
+            var count=EMPLOYEE_NAMES.Length;
+            for(int i=0; i < count; i++)
+            {
+                var employee = new Employee() { Id = i, IsDriver = rnd.Next(2) == 0 ? false : true, Name = EMPLOYEE_NAMES[i] };
+                yield return employee;
+            }
+
         }
     }
 }
