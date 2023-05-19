@@ -23,7 +23,7 @@ namespace Infobip.Models
         {
             var folder = Environment.SpecialFolder.LocalApplicationData;
             var path = Environment.GetFolderPath(folder);
-            DbPath = System.IO.Path.Join(path, "Infobip", "carpool.db");
+            DbPath = System.IO.Path.Join(path, "infobip_carpool.db");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
