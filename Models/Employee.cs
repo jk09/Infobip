@@ -11,9 +11,23 @@ namespace Infobip.Models
 
     public class CarpoolDbContext : DbContext
     {
+
         public DbSet<Car> Cars { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<TravelPlan> TravelPlans { get; set; }
-        
+
+        public string DbPath { get; }
+
+
+        public CarpoolDbContext()
+        {
+            var folder = Environment.SpecialFolder.LocalApplicationData;
+            var path = Environment.GetFolderPath(folder);
+            DbPath = System.IO.Path.Join(path, "Infobip", "carpool.db");
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+            => options.UseSqlite($"Data Source={DbPath}");
+
     }
 }
