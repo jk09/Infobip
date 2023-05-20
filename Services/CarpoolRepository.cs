@@ -43,13 +43,15 @@ namespace Infobip.Services
 
         public async Task<IEnumerable<Employee>> GetUnallocatedEmployees()
         {
-            var query = from emp in _db.Employees
-                        join plan in _db.TravelPlans on emp.Id equals plan.EmployeeId into joinGroup
-                        from joinGrp in joinGroup.DefaultIfEmpty()
-                        where joinGrp == null
-                        select emp;
+            //var query = from emp in _db.Employees
+            //            join plan in _db.TravelPlans on emp.Id equals plan.EmployeeId into joinGroup
+            //            from joinGrp in joinGroup.DefaultIfEmpty()
+            //            where joinGrp == null
+            //            select emp;
 
-            return await query.ToListAsync();
+            //return await query.ToListAsync();
+
+            return await Task.FromResult(Enumerable.Empty<Employee>());
 
         }
 

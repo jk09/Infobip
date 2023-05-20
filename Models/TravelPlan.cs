@@ -8,7 +8,13 @@
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int CarId { get; set; }
-        public IList<int> EmployeeIds { get; set; }
 
+    }
+
+    public class TravelPlanEmployees
+    {
+        public int Id { get; set; }
+        public int TravelPlanId { get; set; }
+        public int EmployeeId { get; set; }
     }
 }
