@@ -12,7 +12,7 @@ namespace Infobip.Models
         public string DbPath { get; }
 
 
-        public CarpoolDbContext()
+        public CarpoolDbContext(DbContextOptions<CarpoolDbContext> opts) : base()
         {
             var folder = Environment.SpecialFolder.LocalApplicationData;
             var path = Environment.GetFolderPath(folder);

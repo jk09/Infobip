@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Infobip.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class HomeController : ControllerBase
     {
         readonly CarpoolRepository _carpoolRepository;
@@ -15,11 +15,11 @@ namespace Infobip.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Car>>> GetUnallocatedCars()
+        public IEnumerable<Car> GetUnallocatedCars()
         {
-            var cars =  await _carpoolRepository.GetUnallocatedCars();
+            var cars =  _carpoolRepository.GetUnallocatedCars().Result.ToList();
 
-            return Ok(cars);
+            return cars;
         }
     }
 }

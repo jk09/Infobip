@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+﻿using Infobip.Models;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 
 public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
         // Add services to the container here
-        //services.AddControllersWithViews();
+        
+        services.AddDbContext<CarpoolDbContext>();
         services.AddControllers();
         services.AddSpaStaticFiles(cfg => cfg.RootPath = "ClientApp/build");
     }
@@ -14,10 +17,16 @@ public class Startup
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         // Configure the app's request pipeline here
+        if (env.IsDevelopment())
+        {
+            // Use developer exception page in development
+            app.UseDeveloperExceptionPage();
+        }
+
         app.UseStaticFiles();
         app.UseSpaStaticFiles();
         app.UseRouting();
-        app.UseEndpoints(endp => { /* configure endpoints */});
+        app.UseEndpoints(endp => { endp.MapControllers(); });
         app.UseSpa(spa => {
 
             spa.Options.SourcePath = "ClientApp";
