@@ -51,7 +51,7 @@ namespace Infobip.Services
 
             //return await query.ToListAsync();
 
-            return await Task.FromResult(Enumerable.Empty<Employee>());
+            return await _db.Employees.ToListAsync();
 
         }
 
@@ -76,5 +76,17 @@ namespace Infobip.Services
             await _db.SaveChangesAsync();
         }
 
+    }
+
+    public class TravelPlanDto
+    {
+        public int Id { get; set; } 
+        public string StartLocation { get; set; }
+        public string EndLocation { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int CarId { get; set; }
+
+        public int[] EmployeeIds { get; set; }
     }
 }

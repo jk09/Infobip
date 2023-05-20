@@ -38,7 +38,6 @@ export function CreateNewTravelPlan(props) {
     function handleSubmit(event) {
         event.preventDefault();
         let data = new FormData(event.target);
-        console.log("startLocation", startLocation);
         data.append("Id", 0);
         data.append("StartLocation", startLocation);
         data.append("EndLocation", endLocation);
@@ -46,8 +45,9 @@ export function CreateNewTravelPlan(props) {
         data.append("EndDate", endDate);
 
         data.append("CarId", selectedCar);
-        data.append("EmployeeIds", selectedEmployees);
+        //data.append("EmployeeIds", selectedEmployees);
 
+        console.log("submitting new travel plan data=", data, startLocation,endLocation, startDate, endDate, selectedCar, selectedEmployees);
         fetch("/api/createnewtravelplan/submit", { method: "POST", body: data })
             .catch((error) => { console.error(error); });
     }
