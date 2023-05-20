@@ -22,7 +22,7 @@ export function CreateNewTravelPlan(props) {
                 console.log("cars data=", json);
                 return json;
             })
-            .then(json=>setCars(json))
+            .then(json => setCars(json))
             .catch(err => console.error(err));
 
         fetch("/api/createnewtravelplan/unallocatedemployees", { method: "GET" })
@@ -45,9 +45,9 @@ export function CreateNewTravelPlan(props) {
         data.append("EndDate", endDate);
 
         data.append("CarId", selectedCar);
-        //data.append("EmployeeIds", selectedEmployees);
+        data.append("EmployeeIds", JSON.stringify(selectedEmployees));
 
-        console.log("submitting new travel plan data=", data, startLocation,endLocation, startDate, endDate, selectedCar, selectedEmployees);
+        console.log("submitting new travel plan data=", data, startLocation, endLocation, startDate, endDate, selectedCar, JSON.stringify(selectedEmployees));
         fetch("/api/createnewtravelplan/submit", { method: "POST", body: data })
             .catch((error) => { console.error(error); });
     }
@@ -67,7 +67,7 @@ export function CreateNewTravelPlan(props) {
         console.log("querySelectorAll('option'=)", q);
         let selectedOptions = q.filter(opt => opt.selected);
         console.log("selected employees options=", selectedOptions);
-        let selEmps = selectedOptions.map(x => x.id);
+        let selEmps = selectedOptions.map(x => parseInt(x.id));
 
         setSelectedEmployees(selEmps);
     }

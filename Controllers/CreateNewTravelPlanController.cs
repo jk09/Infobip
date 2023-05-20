@@ -31,10 +31,23 @@ namespace Infobip.Controllers
 
         [HttpPost("submit")]
         [Consumes("multipart/form-data")]
-        public ActionResult Submit([FromForm] TravelPlan travelPlan)
+        public ActionResult Submit([FromForm] TravelPlanDto travelPlan)
         {
 
             return Ok();
         }
+    }
+
+    public class TravelPlanDto
+    {
+        public int Id { get; set; }
+        public string StartLocation { get; set; }
+        public string EndLocation { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+
+        public int CarId { get; set; }
+
+        public string EmployeeIds { get; set; }
     }
 }
