@@ -41,7 +41,7 @@ namespace Infobip.Services
             return await _db.TravelPlans.CountAsync();
         }
 
-        public async Task<IEnumerable<Employee>> GetUnallocatedEmployees(int limit)
+        public async Task<IEnumerable<Employee>> GetUnallocatedEmployees()
         {
             var query = from emp in _db.Employees
                         join plan in _db.TravelPlans on emp.Id equals plan.EmployeeId into joinGroup

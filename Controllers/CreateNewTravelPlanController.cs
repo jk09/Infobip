@@ -20,5 +20,12 @@ namespace Infobip.Controllers
             var res = _carpoolRepository.GetUnallocatedCars().Result;
             return res.ToList();
         }
+
+        [HttpGet("unallocatedemployees")]
+        public IEnumerable<Employee> GetEmployees()
+        {
+            var res = _carpoolRepository.GetUnallocatedEmployees().Result;
+            return res.ToList();
+        }
     }
 }

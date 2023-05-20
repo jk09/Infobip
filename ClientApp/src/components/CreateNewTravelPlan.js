@@ -5,6 +5,7 @@ export function CreateNewTravelPlan(props) {
 
     let [isOpen, setIsOpen] = useState(false);
     let [cars, setCars] = useState([]);
+    let [employees, setEmployees] = useState([]);
 
     useEffect(() => {
         // fetch the data from the backend
@@ -15,6 +16,15 @@ export function CreateNewTravelPlan(props) {
                 return json;
             })
             .then(json=>setCars(json))
+            .catch(err => console.error(err));
+
+        fetch("/api/createnewtravelplan/unallocatedemployees", { method: "GET" })
+            .then(data => {
+                let json = data.json();
+                console.log("cars data=", json);
+                return json;
+            })
+            .then(json => setEmployees(json))
             .catch(err => console.error(err));
     }, []);
 
@@ -66,8 +76,7 @@ export function CreateNewTravelPlan(props) {
                                 <Label for="employees" sm={2}>Employees</Label>
                                 <Col sm={5}>
                                     <Input id="employees" type="select" multiple>
-                                        <option>1</option>
-                                        <option>2</option>
+                                        {employees.map(emp => <option key={emp.id}>{emp.name}</option>) }
                                     </Input>
                                 </Col>
                             </FormGroup>
