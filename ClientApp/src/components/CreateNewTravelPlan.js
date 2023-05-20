@@ -1,11 +1,18 @@
-﻿import React, { useEffect, useState } from 'react';
+﻿import React, { useRef, useEffect, useState } from 'react';
 import { Button, Form, FormGroup, Label, Input, Col, Collapse, Card, CardBody } from 'reactstrap';
 
 export function CreateNewTravelPlan(props) {
 
     let [isOpen, setIsOpen] = useState(false);
     let [cars, setCars] = useState([]);
-    let [employees, setEmployees] = useState([]);
+    let [employees, setEmployees] = useState([]); 
+
+    let [startLocation, setStartLocation] = useState(null);
+    let [endLocation, setEndLocation] = useState(null);
+    let [startDate, setStartDate] = useState(null);
+    let [endDate, setEndDate] = useState(null);
+    let [selectedCar, setSelectedCar] = useState(null);
+    let [selectedEmployees, setSelectedEmployees] = useState(null);
 
     useEffect(() => {
         // fetch the data from the backend
@@ -28,6 +35,17 @@ export function CreateNewTravelPlan(props) {
             .catch(err => console.error(err));
     }, []);
 
+    function handleSubmit(event) {
+        event.preventDefault();
+        let data = new FormData(event.target);
+        console.log("startLocation", startLocation);
+        data.append("Id", 0);
+        data.append("StartLocation", startLocation);
+        data.append("EndLocation", endLocation);
+
+        fetch("/api/createnewtravelplan/submit", { method: "POST", body: data })
+            .catch((error) => { console.error(error); });
+    }
     
     return (
         <div>
@@ -36,18 +54,18 @@ export function CreateNewTravelPlan(props) {
             <Collapse isOpen={isOpen}>
                 <Card>
                     <CardBody>
-                        <Form>
+                        <Form onSubmit={handleSubmit}>
 
                             <FormGroup row>
                                 <Label for="startLocation" sm={2}>Start location</Label>
                                 <Col sm={5}>
-                                    <Input id="startLocation" placeholder="The start location of the travel"></Input></Col>
+                                    <Input id="startLocation" placeholder="The start location of the travel" value={startLocation} onChange={(event)=>setStartLocation(event.target.value) }></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label for="endLocation" sm={2}>End location</Label>
                                 <Col sm={5}>
-                                    <Input id="endLocation" placeholder="The end location of the travel"></Input></Col>
+                                    <Input id="endLocation" placeholder="The end location of the travel" ></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
@@ -59,13 +77,13 @@ export function CreateNewTravelPlan(props) {
                             <FormGroup row>
                                 <Label for="endDate" sm={2}>End date</Label>
                                 <Col sm={5}>
-                                    <Input id="endDate" type="date" placeholder="The end date of the travel"></Input></Col>
+                                    <Input id="endDate" type="date" placeholder="The end date of the travel" ></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label for="car" sm={2}>Car</Label>
                                 <Col sm={5}>
-                                    <Input id="car" type="select">
+                                    <Input id="car" type="select" >
                                         {cars.map(car => <option key={car.id}>{ car.name }</option>)}
                                    </Input>
                                 </Col>
@@ -75,7 +93,7 @@ export function CreateNewTravelPlan(props) {
                             <FormGroup row>
                                 <Label for="employees" sm={2}>Employees</Label>
                                 <Col sm={5}>
-                                    <Input id="employees" type="select" multiple>
+                                    <Input id="employees" type="select" multiple >
                                         {employees.map(emp => <option key={emp.id}>{emp.name}</option>) }
                                     </Input>
                                 </Col>

@@ -1,6 +1,7 @@
 ﻿using Infobip.Models;
 using Infobip.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Dynamic;
 
 namespace Infobip.Controllers
 {
@@ -26,6 +27,14 @@ namespace Infobip.Controllers
         {
             var res = _carpoolRepository.GetUnallocatedEmployees().Result;
             return res.ToList();
+        }
+
+        [HttpPost("submit")]
+        [Consumes("multipart/form-data")]
+        public ActionResult Submit([FromForm] TravelPlan travelPlan)
+        {
+
+            return Ok();
         }
     }
 }
