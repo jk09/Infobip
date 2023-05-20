@@ -11,7 +11,7 @@ export function CreateNewTravelPlan(props) {
     let [endLocation, setEndLocation] = useState(null);
     let [startDate, setStartDate] = useState(null);
     let [endDate, setEndDate] = useState(null);
-    let [selectedCar, setSelectedCar] = useState("");
+    let [selectedCar, setSelectedCar] = useState(null);
     let [selectedEmployees, setSelectedEmployees] = useState(null);
 
     useEffect(() => {
@@ -45,19 +45,31 @@ export function CreateNewTravelPlan(props) {
         data.append("StartDate", startDate);
         data.append("EndDate", endDate);
 
-        console.log("selected car changed event", selectedCar);
         data.append("CarId", selectedCar);
+        data.append("EmployeeIds", selectedEmployees);
+
         fetch("/api/createnewtravelplan/submit", { method: "POST", body: data })
             .catch((error) => { console.error(error); });
     }
 
     function onSelectedCarChanged(event) {
-        let selectionIdx = event.target.options.selectedIndex;
-        let carId = event.target.children[selectionIdx].getAttribute("id");
+        let q = [...event.target.querySelectorAll("option")];
 
-        console.log("selected car index and Id=", selectionIdx, carId);
+        let carId = q.filter(x=>x.selected)[0].getAttribute("id");
+
+        console.log("selected car id", carId);
 
         setSelectedCar(carId);
+    }
+
+    function onSelectedEmployeesChanged(event) {
+        let q = [...event.target.querySelectorAll("option")];
+        console.log("querySelectorAll('option'=)", q);
+        let selectedOptions = q.filter(opt => opt.selected);
+        console.log("selected employees options=", selectedOptions);
+        let selEmps = selectedOptions.map(x => x.id);
+
+        setSelectedEmployees(selEmps);
     }
 
     return (
@@ -72,31 +84,31 @@ export function CreateNewTravelPlan(props) {
                             <FormGroup row>
                                 <Label for="startLocation" sm={2}>Start location</Label>
                                 <Col sm={5}>
-                                    <Input id="startLocation" placeholder="The start location of the travel" value={startLocation} onChange={(event)=>setStartLocation(event.target.value) }></Input></Col>
+                                    <Input id="startLocation" placeholder="The start location of the travel"  onChange={(event)=>setStartLocation(event.target.value) }></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label for="endLocation" sm={2}>End location</Label>
                                 <Col sm={5}>
-                                    <Input id="endLocation" placeholder="The end location of the travel" value={endLocation} onChange={(event)=>setEndLocation(event.target.value) }></Input></Col>
+                                    <Input id="endLocation" placeholder="The end location of the travel" onChange={(event)=>setEndLocation(event.target.value) }></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label for="startDate" sm={2}>Start date</Label>
                                 <Col sm={5}>
-                                    <Input id="startDate" type="date" placeholder="The start date of the travel" value={startDate} onChange={(event)=>setStartDate(event.target.value) }></Input></Col>
+                                    <Input id="startDate" type="date" placeholder="The start date of the travel" onChange={(event)=>setStartDate(event.target.value) }></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label for="endDate" sm={2}>End date</Label>
                                 <Col sm={5}>
-                                    <Input id="endDate" type="date" placeholder="The end date of the travel" value={endDate} onChange={(event)=>setEndDate(event.target.value) } ></Input></Col>
+                                    <Input id="endDate" type="date" placeholder="The end date of the travel" onChange={(event)=>setEndDate(event.target.value) } ></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label for="car" sm={2}>Car</Label>
                                 <Col sm={5}>
-                                    <Input id="car" type="select" value={selectedCar} onChange={onSelectedCarChanged}>
+                                    <Input id="car" type="select"  onChange={onSelectedCarChanged}>
                                         {cars.map(car => <option key={car.id} id={car.id}>{ car.name }</option>)}
                                    </Input>
                                 </Col>
@@ -106,8 +118,8 @@ export function CreateNewTravelPlan(props) {
                             <FormGroup row>
                                 <Label for="employees" sm={2}>Employees</Label>
                                 <Col sm={5}>
-                                    <Input id="employees" type="select" multiple >
-                                        {employees.map(emp => <option key={emp.id}>{emp.name}</option>) }
+                                    <Input id="employees" type="select" multiple onChange={onSelectedEmployeesChanged }>
+                                        {employees.map(emp => <option key={emp.id} id={emp.id }>{emp.name}</option>) }
                                     </Input>
                                 </Col>
                             </FormGroup>
