@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Infobip.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Infobip.Controllers
 {
@@ -28,6 +29,17 @@ namespace Infobip.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+    }
+
+    [ApiController]
+    [Route("[controller]")]
+    public class CreateNewTravelPlanController : ControllerBase
+    {
+        [HttpGet]
+        public IEnumerable<Car> Get()
+        {
+            return new[] { new Car() { CarType = "car type" } };
         }
     }
 }
