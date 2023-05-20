@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Button, Form, FormGroup, Label, Input, Col, Collapse, Card, CardBody } from 'reactstrap';
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
@@ -20,10 +20,81 @@ const MyCalendar = (props) => (
         />
     </div>);
 
-export class Home extends Component {
-    static displayName = Home.name;
+function CreateNewTravelPlan(props) {
 
-    render() {
+    let [isOpen, setIsOpen] = useState(false);
+    return (
+        <div>
+            <Button color="primary" style={{ marginBottom: '1rem' }} onClick={()=>setIsOpen(prev=>!prev) }>Create new travel plan</Button>
+
+            <Collapse isOpen={isOpen}>
+                <Card>
+                    <CardBody>
+                        <Form>
+
+                            <FormGroup row>
+                                <Label for="startLocation" sm={2}>Start location</Label>
+                                <Col sm={5}>
+                                    <Input id="startLocation" placeholder="The start location of the travel"></Input></Col>
+                            </FormGroup>
+
+                            <FormGroup row>
+                                <Label for="endLocation" sm={2}>End location</Label>
+                                <Col sm={5}>
+                                    <Input id="endLocation" placeholder="The end location of the travel"></Input></Col>
+                            </FormGroup>
+
+                            <FormGroup row>
+                                <Label for="startDate" sm={2}>Start date</Label>
+                                <Col sm={5}>
+                                    <Input id="startDate" type="date" placeholder="The start date of the travel"></Input></Col>
+                            </FormGroup>
+
+                            <FormGroup row>
+                                <Label for="endDate" sm={2}>End date</Label>
+                                <Col sm={5}>
+                                    <Input id="endDate" type="date" placeholder="The end date of the travel"></Input></Col>
+                            </FormGroup>
+
+                            <FormGroup row>
+                                <Label for="car" sm={2}>Car</Label>
+                                <Col sm={5}>
+                                    <Input id="car" type="select">
+                                        <option>1</option>
+                                        <option>2</option>
+                                    </Input>
+                                </Col>
+                            </FormGroup>
+
+
+                            <FormGroup row>
+                                <Label for="employees" sm={2}>Employees</Label>
+                                <Col sm={5} >
+                                    <Input id="employees" type="select" multiple>
+                                        <option>1</option>
+                                        <option>2</option>
+                                    </Input>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Col>
+                                    <Button>
+                                        Submit
+                                    </Button>
+                                </Col>
+                            </FormGroup>
+                        </Form>
+                    </CardBody>
+                </Card>
+            </Collapse>
+
+        </div>
+    
+    );
+}
+export function Home(props) {
+        
+
         return (
             <div>
                 <h1>Infobip Carpool Management</h1>
@@ -51,72 +122,9 @@ export class Home extends Component {
 
                 <div>
                     <h2>Carpool</h2>
-                    <div>
-                        <Button color="primary" style={{ marginBottom: '1rem' }}>Create new travel plan</Button>
-
-                        <Collapse isOpen={true}>
-                            <Card>
-                                <CardBody>
-                                    <Form>
-
-                                        <FormGroup row>
-                                            <Label for="startLocation" sm={2}>Start location</Label>
-                                            <Col sm={5}>
-                                                <Input id="startLocation" placeholder="The start location of the travel"></Input></Col>
-                                        </FormGroup>
-
-                                        <FormGroup row>
-                                            <Label for="endLocation" sm={2}>End location</Label>
-                                            <Col sm={5}>
-                                                <Input id="endLocation" placeholder="The end location of the travel"></Input></Col>
-                                        </FormGroup>
-
-                                        <FormGroup row>
-                                            <Label for="startDate" sm={2}>Start date</Label>
-                                            <Col sm={5}>
-                                                <Input id="startDate" type="date" placeholder="The start date of the travel"></Input></Col>
-                                        </FormGroup>
-
-                                        <FormGroup row>
-                                            <Label for="endDate" sm={2}>End date</Label>
-                                            <Col sm={5}>
-                                                <Input id="endDate" type="date" placeholder="The end date of the travel"></Input></Col>
-                                        </FormGroup>
-
-                                        <FormGroup row>
-                                            <Label for="car" sm={2}>Car</Label>
-                                            <Col sm={5}>
-                                                <Input id="car" type="select">
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                </Input>
-                                            </Col>
-                                        </FormGroup>
-
-
-                                        <FormGroup row>
-                                            <Label for="employees" sm={2}>Employees</Label>
-                                            <Col sm={5} >
-                                                <Input id="employees" type="select" multiple>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                </Input>
-                                            </Col>
-                                        </FormGroup>
-                                        <FormGroup row>
-                                            <Col>
-                                                <Button>
-                                                    Submit
-                                                </Button>
-                                            </Col>
-                                        </FormGroup>
-                                    </Form>
-                                </CardBody>
-                            </Card>
-                        </Collapse>
-
-                    </div>
+               
                     <hr />
+                    <CreateNewTravelPlan />
                     <MyCalendar />
                 </div>
             </div>
@@ -124,5 +132,5 @@ export class Home extends Component {
 
 
         );
-    }
+    
 }
