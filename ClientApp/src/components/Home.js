@@ -53,6 +53,7 @@ export function Home(props) {
 
                 <hr />
                 <CreateNewTravelPlan />
+                
                 <MyCalendar />
             </div>
         </div>

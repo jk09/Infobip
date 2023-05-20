@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Infobip.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/createnewtravelplan")]
     public class CreateNewTravelPlanController : ControllerBase
     {
         readonly CarpoolRepository _carpoolRepository;
@@ -14,8 +14,8 @@ namespace Infobip.Controllers
             _carpoolRepository = carpoolRepository;
         }
 
-        [HttpGet]
-        public IEnumerable<Car> Get()
+        [HttpGet("unallocatedcars")]
+        public IEnumerable<Car> GetUnallocatedCars()
         {
             var res = _carpoolRepository.GetUnallocatedCars().Result;
             return res.ToList();

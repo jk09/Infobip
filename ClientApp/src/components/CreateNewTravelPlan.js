@@ -8,7 +8,7 @@ export function CreateNewTravelPlan(props) {
 
     useEffect(() => {
         // fetch the data from the backend
-        fetch('createnewtravelplan')
+        fetch("/api/createnewtravelplan/unallocatedcars",{method:"GET"})
             .then(data => {
                 let json = data.json();
                 console.log("cars data=", json);
@@ -23,7 +23,7 @@ export function CreateNewTravelPlan(props) {
         <div>
             <Button color="primary" style={{ marginBottom: '1rem' }} onClick={() => setIsOpen(prev => !prev)}>Create new travel plan</Button>
 
-            <Collapse isOpen={isOpen}>q
+            <Collapse isOpen={isOpen}>
                 <Card>
                     <CardBody>
                         <Form>
