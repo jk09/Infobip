@@ -21,7 +21,7 @@ export function CreateNewTravelPlan(props) {
         fetch("/api/createnewtravelplan/unallocatedemployees", { method: "GET" })
             .then(data => {
                 let json = data.json();
-                console.log("cars data=", json);
+                console.log("employee data=", json);
                 return json;
             })
             .then(json => setEmployees(json))
