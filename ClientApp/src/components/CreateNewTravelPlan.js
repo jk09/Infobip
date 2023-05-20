@@ -42,6 +42,8 @@ export function CreateNewTravelPlan(props) {
         data.append("Id", 0);
         data.append("StartLocation", startLocation);
         data.append("EndLocation", endLocation);
+        data.append("StartDate", startDate);
+        data.append("EndDate", endDate);
 
         fetch("/api/createnewtravelplan/submit", { method: "POST", body: data })
             .catch((error) => { console.error(error); });
@@ -65,19 +67,19 @@ export function CreateNewTravelPlan(props) {
                             <FormGroup row>
                                 <Label for="endLocation" sm={2}>End location</Label>
                                 <Col sm={5}>
-                                    <Input id="endLocation" placeholder="The end location of the travel" ></Input></Col>
+                                    <Input id="endLocation" placeholder="The end location of the travel" value={endLocation} onChange={(event)=>setEndLocation(event.target.value) }></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label for="startDate" sm={2}>Start date</Label>
                                 <Col sm={5}>
-                                    <Input id="startDate" type="date" placeholder="The start date of the travel"></Input></Col>
+                                    <Input id="startDate" type="date" placeholder="The start date of the travel" value={startDate} onChange={(event)=>setStartDate(event.target.value) }></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label for="endDate" sm={2}>End date</Label>
                                 <Col sm={5}>
-                                    <Input id="endDate" type="date" placeholder="The end date of the travel" ></Input></Col>
+                                    <Input id="endDate" type="date" placeholder="The end date of the travel" value={endDate} onChange={(event)=>setEndDate(event.target.value) } ></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
