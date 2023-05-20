@@ -11,7 +11,7 @@ export function CreateNewTravelPlan(props) {
     let [endLocation, setEndLocation] = useState(null);
     let [startDate, setStartDate] = useState(null);
     let [endDate, setEndDate] = useState(null);
-    let [selectedCar, setSelectedCar] = useState(null);
+    let [selectedCar, setSelectedCar] = useState("");
     let [selectedEmployees, setSelectedEmployees] = useState(null);
 
     useEffect(() => {
@@ -45,10 +45,21 @@ export function CreateNewTravelPlan(props) {
         data.append("StartDate", startDate);
         data.append("EndDate", endDate);
 
+        console.log("selected car changed event", selectedCar);
+        data.append("CarId", selectedCar);
         fetch("/api/createnewtravelplan/submit", { method: "POST", body: data })
             .catch((error) => { console.error(error); });
     }
-    
+
+    function onSelectedCarChanged(event) {
+        let selectionIdx = event.target.options.selectedIndex;
+        let carId = event.target.children[selectionIdx].getAttribute("id");
+
+        console.log("selected car index and Id=", selectionIdx, carId);
+
+        setSelectedCar(carId);
+    }
+
     return (
         <div>
             <Button color="primary" style={{ marginBottom: '1rem' }} onClick={() => setIsOpen(prev => !prev)}>Create new travel plan</Button>
@@ -85,8 +96,8 @@ export function CreateNewTravelPlan(props) {
                             <FormGroup row>
                                 <Label for="car" sm={2}>Car</Label>
                                 <Col sm={5}>
-                                    <Input id="car" type="select" >
-                                        {cars.map(car => <option key={car.id}>{ car.name }</option>)}
+                                    <Input id="car" type="select" value={selectedCar} onChange={onSelectedCarChanged}>
+                                        {cars.map(car => <option key={car.id} id={car.id}>{ car.name }</option>)}
                                    </Input>
                                 </Col>
                             </FormGroup>
