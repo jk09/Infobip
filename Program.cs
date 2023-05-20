@@ -1,8 +1,14 @@
+using Infobip.Models;
+using Infobip.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
+
+builder.Services.AddDbContext<CarpoolDbContext>();
+builder.Services.AddScoped<CarpoolRepository>();
 
 var app = builder.Build();
 
