@@ -9,7 +9,12 @@ export function CreateNewTravelPlan(props) {
     useEffect(() => {
         // fetch the data from the backend
         fetch('createnewtravelplan')
-            .then(data => { console.log("cars data=", data.json()); setCars(data); })
+            .then(data => {
+                let json = data.json();
+                console.log("cars data=", json);
+                return json;
+            })
+            .then(json=>setCars(json))
             .catch(err => console.error(err));
     }, []);
 
@@ -51,8 +56,8 @@ export function CreateNewTravelPlan(props) {
                                 <Label for="car" sm={2}>Car</Label>
                                 <Col sm={5}>
                                     <Input id="car" type="select">
-                                       
-                                    </Input>
+                                        {cars.map(car => <option key={car.id}>{ car.name }</option>)}
+                                   </Input>
                                 </Col>
                             </FormGroup>
 
