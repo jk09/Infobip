@@ -8,8 +8,9 @@ export function CreateNewTravelPlan(props) {
 
     useEffect(() => {
         // fetch the data from the backend
-        fetch('home/GetUnallocatedCars')
-            .then(data => { console.log("cars data=",data); setCars(data); }) 
+        fetch('/api/home/UnallocatedCars')
+        .then(res=>res.json())
+            .then(data => { console.log("cars data=",data); }) 
             .catch(err => console.error(err));
     }, []); 
 

@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Infobip.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class HomeController : Controller
+    [Route("api/[controller]")]
+    public class HomeController : ControllerBase
     {
         readonly CarpoolRepository _carpoolRepository;
         public HomeController(CarpoolRepository carpoolRepository)
@@ -14,10 +14,12 @@ namespace Infobip.Controllers
             _carpoolRepository = carpoolRepository;
         }
 
-        [HttpGet(Name = "GetUnallocatedCars")]
-        public async Task<IEnumerable<Car>> GetUnallocatedCars()
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Car>>> GetUnallocatedCars()
         {
-            return await _carpoolRepository.GetUnallocatedCars();
+            var cars =  await _carpoolRepository.GetUnallocatedCars();
+
+            return Ok(cars);
         }
     }
 }

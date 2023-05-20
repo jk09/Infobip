@@ -5,7 +5,8 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         // Add services to the container here
-        services.AddControllersWithViews();
+        //services.AddControllersWithViews();
+        services.AddControllers();
         services.AddSpaStaticFiles(cfg => cfg.RootPath = "ClientApp/build");
     }
 
