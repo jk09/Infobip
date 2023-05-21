@@ -1,12 +1,13 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { Button, Form, FormGroup, Label, Input, Col, Collapse, Card, CardBody } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Col, Collapse, Card, CardBody, FormFeedback,Alert } from 'reactstrap';
+
 
 export function CreateNewTravelPlan(props) {
 
     let [isOpen, setIsOpen] = useState(false);
     let [cars, setCars] = useState([]);
     let [employees, setEmployees] = useState([]); 
-
+    let [error, setError] = useState(null);
  
 
     useEffect(() => {
@@ -59,7 +60,13 @@ export function CreateNewTravelPlan(props) {
 
         console.log("submitting new travel plan data=", data, startLocation, endLocation, startDate, endDate, carId, JSON.stringify(selectedEmployeeIds));
         fetch("/api/createnewtravelplan/submit", { method: "POST", body: data })
-            .catch((error) => { console.error(error); });
+            .then(resp => {
+                console.log('submit fetch response', resp);
+                if (!resp.ok) {
+                    setError(resp.statusText);
+                }
+
+            });
     }
     
 
@@ -109,18 +116,22 @@ export function CreateNewTravelPlan(props) {
                             <FormGroup row>
                                 <Label for="employees" sm={2}>Employees</Label>
                                 <Col sm={5}>
-                                    <Input id="employees" type="select" multiple >
+                                    <Input id="employees" type="select" multiple>
                                         {employees.map(emp => <option key={emp.id} id={emp.id }>{emp.name}</option>) }
                                     </Input>
+
                                 </Col>
+
+
                             </FormGroup>
-                            <FormGroup row>
-                                <Col>
-                                    <Button>
-                                        Submit
-                                    </Button>
-                                </Col>
-                            </FormGroup>
+
+
+                            <Button type="submit">
+                                Submit
+                            </Button>
+
+                            <Alert color="warning" style={{ marginTop: '1rem' }} isOpen={error !== null}>{error}</Alert>
+                          
                         </Form>
                     </CardBody>
                 </Card>

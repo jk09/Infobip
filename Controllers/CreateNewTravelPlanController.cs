@@ -38,20 +38,9 @@ namespace Infobip.Controllers
         [HttpPost("submit")]
         public async Task<ActionResult> Submit([FromForm] TravelPlanDto travelPlan)
         {
-            try
-            {
-                await _carpoolRepository.AddNewTravelPlan(travelPlan);
+            await _carpoolRepository.AddNewTravelPlan(travelPlan);
 
-                return Ok();
-            }
-            catch (DbUpdateException ex)
-            {
-                return Problem(ex.Message, statusCode: 400);
-            }
-            catch (Exception ex)
-            {
-                return Problem(ex.Message, statusCode: 500);
-            }
+            return Ok();
         }
     }
 

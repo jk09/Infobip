@@ -77,7 +77,7 @@ namespace Infobip.Services
 
                     plan.Employees.Add(employee);
                 }
-
+                throw null;
                 context.TravelPlans.Add(plan);
 
                 await context.SaveChangesAsync();
