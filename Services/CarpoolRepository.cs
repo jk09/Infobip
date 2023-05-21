@@ -87,7 +87,7 @@ namespace Infobip.Services
                     return q.Select(x => (x.StartDate, x.EndDate));
                 }
 
-                var employeeIds = JsonSerializer.Deserialize<int[]>(dto.EmployeeIds);
+                var employeeIds = JsonSerializer.Deserialize<int[]>(dto.EmployeeIds).ToList();
                 Debug.Assert(employeeIds != null);
 
                 // validate the new travel plan
@@ -124,7 +124,7 @@ namespace Infobip.Services
                     }
                 }
 
-                var employees = await context.Employees.Join(employeeIds, x => x.Id, x => x, (emp, _) => emp).ToListAsync();
+                var employees = await context.Employees.Where(e=>employeeIds.Contains(e.Id)).ToListAsync();
                 Assert(employees.Any(x => x.IsDriver), "At least one employee must be a driver");
                 
                 // save the data
