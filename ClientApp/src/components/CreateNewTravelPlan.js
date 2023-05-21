@@ -70,10 +70,16 @@ export function CreateNewTravelPlan(props) {
                     window.location.reload();        
                 }
                 else {
-                    setError(resp.statusText);
+                    resp.json().then(function (data) {
+
+                        console.log("submit fetch response data", data);
+                        setError(data.detail);
+
+                    });
                 }
 
-            });
+            })
+            .catch(err=>console.error(err));
     }
     
 

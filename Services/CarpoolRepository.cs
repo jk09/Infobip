@@ -9,9 +9,9 @@ using System.Text.Json;
 
 namespace Infobip.Services
 {
-    public class TravelPlanConsistencyException : Exception {
+    public class TravelPlanValidationException : Exception {
 
-        public TravelPlanConsistencyException(string? message) : base(message)
+        public TravelPlanValidationException(string? message) : base(message)
         {
         }
     }
@@ -60,7 +60,7 @@ namespace Infobip.Services
 
             static void Assert(bool condition, string? errorMessage = null)
             {
-                if (!condition) throw new TravelPlanConsistencyException(errorMessage);
+                if (!condition) throw new TravelPlanValidationException(errorMessage);
             }
 
             static bool NonOverlap(DateTime a1, DateTime a2, DateTime b1, DateTime b2)
@@ -100,7 +100,7 @@ namespace Infobip.Services
                 {
                     Assert(carAllocs.All(a => NonOverlap(a.startDate, a.endDate, dto.StartDate, dto.EndDate)));
                 }
-                catch (TravelPlanConsistencyException)
+                catch (TravelPlanValidationException)
                 {
                     var car = await context.Cars.FindAsync(dto.CarId);
                     Debug.Assert(car != null);
@@ -115,7 +115,7 @@ namespace Infobip.Services
                     {
                         Assert(employeeAllocs.All(a => NonOverlap(a.startDate, a.endDate, dto.StartDate, dto.EndDate)));
                     }
-                    catch (TravelPlanConsistencyException)
+                    catch (TravelPlanValidationException)
                     {
                         var employee = await context.Employees.FindAsync(employeeId);
                         Debug.Assert(employee != null);

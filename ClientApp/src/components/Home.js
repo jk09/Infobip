@@ -1,42 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { Calendar, momentLocalizer } from 'react-big-calendar'
+import { momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CreateNewTravelPlan } from './CreateNewTravelPlan';
+import { CarpoolCalendar } from './CarpoolCalendar';
 
 
-const localizer = momentLocalizer(moment)
-
-function CarpoolCalendar(props) {
-    let [carpoolEvents,setCarpoolEvents] = useState([]);
-
-    useEffect(
-        () => {
-            fetch("/api/travelplans/events", { method: "GET" })
-                .then(data => {
-                    return data.json();
-                })
-                .then(json => {
-                    console.log("travel plan events=", json);
-                    let events = json.map(x => ({ id: x.id, start: x.startDate, end: x.endDate, title: `Carpool ${x.startLocation}->${x.endLocation} w/ ${x.employees}` }));
-
-                    setCarpoolEvents(events);
-                });
-        },
-        []);
-    return (
-        <div>   
-            <Calendar
-                localizer={localizer}
-                events={carpoolEvents}
-                startAccessor="start"
-                endAccessor="end"
-                style={{ height: 500 }} />
-        </div>
-    );
-}
+export const localizer = momentLocalizer(moment)
 
 export function Home(props) {
 

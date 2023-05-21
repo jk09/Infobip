@@ -2,6 +2,7 @@
 using Infobip.Models;
 using Infobip.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 using System.Dynamic;
@@ -38,9 +39,16 @@ namespace Infobip.Controllers
         [HttpPost("submit")]
         public async Task<ActionResult> Submit([FromForm] TravelPlanDto travelPlan)
         {
-            await _carpoolRepository.AddNewTravelPlan(travelPlan);
+            try
+            {
+                await _carpoolRepository.AddNewTravelPlan(travelPlan);
 
-            return Ok();
+                return Ok();
+            }
+            catch (TravelPlanValidationException ex)
+            {
+                return Problem(ex.Message, statusCode: 500);
+            }
         }
 
       
