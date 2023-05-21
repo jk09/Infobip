@@ -62,7 +62,10 @@ export function CreateNewTravelPlan(props) {
         fetch("/api/createnewtravelplan/submit", { method: "POST", body: data })
             .then(resp => {
                 console.log('submit fetch response', resp);
-                if (!resp.ok) {
+                if (resp.ok) {
+                    window.location.reload();        
+                }
+                else {
                     setError(resp.statusText);
                 }
 
