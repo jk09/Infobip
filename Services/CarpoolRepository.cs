@@ -26,30 +26,7 @@ namespace Infobip.Services
             }
         }
 
-        public async Task<int> GetEmployeesCount()
-        {
-            using (var context = new CarpoolDbContext())
-            {
-                return await context.Employees.CountAsync();
-            }
-        }
-
-        public async Task<int> GetCarsCount()
-        {
-            using (var context = new CarpoolDbContext())
-            {
-                return await context.Cars.CountAsync();
-            }
-        }
-
-        public async Task<int> GetTravelPlansCount()
-        {
-            using (var context = new CarpoolDbContext())
-            {
-
-                return await context.TravelPlans.CountAsync();
-            }
-        }
+        
 
         public async Task<IEnumerable<Employee>> GetUnallocatedEmployees()
         {
@@ -97,6 +74,22 @@ namespace Infobip.Services
 
         }
 
+        public async Task<IEnumerable<TravelPlanEvent>> GetTravelPlansEvents()
+        {
+            using (var context = new CarpoolDbContext())
+            {
+                var plansCars = context.TravelPlans
+                    .Join(context.Cars, x => x.CarId, y => y.Id, 
+                    (plan, car) => new { id=plan.Id, employees = plan.Employees.Select(emp=>emp.Name), carName = car.Name, startDate = plan.StartDate, endDate= plan.EndDate, endLocation=plan.EndLocation, startLocation=plan.StartLocation });
+
+                var data = await plansCars.ToListAsync();
+
+                var events = data.Select(x => new TravelPlanEvent() { Id = x.id, CarName = x.carName, Employees = x.employees, EndDate = x.endDate, StartDate = x.startDate, EndLocation = x.endLocation, StartLocation = x.startLocation }).ToList();
+
+                return events;
+
+}
+        }
     }
 
 
