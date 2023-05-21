@@ -6,19 +6,21 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CreateNewTravelPlan } from './CreateNewTravelPlan';
 
 
-const myEventsList = [];
+const carpoolEvents = [];
 const localizer = momentLocalizer(moment)
 
-const MyCalendar = (props) => (
-    <div>
-        <Calendar
-            localizer={localizer}
-            events={myEventsList}
-            startAccessor="start"
-            endAccessor="end"
-            style={{ height: 500 }}
-        />
-    </div>);
+function CarpoolCalendar(props) {
+    return (
+        <div>
+            <Calendar
+                localizer={localizer}
+                events={carpoolEvents}
+                startAccessor="start"
+                endAccessor="end"
+                style={{ height: 500 }} />
+        </div>
+    );
+}
 
 export function Home(props) {
 
@@ -54,7 +56,7 @@ export function Home(props) {
                 <hr />
                 <CreateNewTravelPlan />
                 
-                <MyCalendar />
+                <CarpoolCalendar />
             </div>
         </div>
 
