@@ -15,12 +15,10 @@ namespace Infobip.Controllers
     public class CreateNewTravelPlanController : ControllerBase
     {
         private readonly ICarpoolRepository _carpoolRepository; 
-        private readonly IMapper _mapper;
 
-        public CreateNewTravelPlanController(ICarpoolRepository carpoolRepository, IMapper mapper)
+        public CreateNewTravelPlanController(ICarpoolRepository carpoolRepository)
         {
             _carpoolRepository = carpoolRepository;
-            _mapper = mapper;
         }
 
         [HttpGet("unallocatedcars")]
