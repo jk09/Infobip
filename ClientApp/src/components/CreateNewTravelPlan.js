@@ -73,7 +73,7 @@ export function CreateNewTravelPlan(props) {
                     resp.json().then(function (data) {
 
                         console.log("submit fetch response data", data);
-                        setError(data.detail);
+                        setError(data.detail || JSON.stringify(data.errors));
 
                     });
                 }
