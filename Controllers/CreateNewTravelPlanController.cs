@@ -2,6 +2,8 @@
 using Infobip.Models;
 using Infobip.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
 using System.Dynamic;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -38,9 +40,20 @@ namespace Infobip.Controllers
         [HttpPost("submit")]
         public async Task<ActionResult> Submit([FromForm] TravelPlanDto travelPlan)
         {
-            await _carpoolRepository.AddNewTravelPlan(travelPlan);
+            try
+            {
+                await _carpoolRepository.AddNewTravelPlan(travelPlan);
 
-            return Ok();
+                return Ok();
+            }
+            catch (DbUpdateException ex)
+            {
+                return Problem(ex.Message, statusCode: 400);
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message, statusCode: 500);
+            }
         }
     }
 
