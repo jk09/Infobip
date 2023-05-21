@@ -1,12 +1,20 @@
 ﻿using AutoMapper;
 using Infobip.Controllers;
 using Infobip.Models;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Text.Json;
 
 namespace Infobip.Services
 {
+    public class TravelPlanConsistencyException : Exception {
+
+        public TravelPlanConsistencyException(string? message) : base(message)
+        {
+        }
+    }
+
     public class CarpoolRepository : ICarpoolRepository
     {
         private readonly IMapper _mapper;
@@ -46,27 +54,72 @@ namespace Infobip.Services
 
         public async Task AddNewTravelPlan(TravelPlanDto dto)
         {
-          
+
+           
+
+            static void Assert(bool condition, string? errorMessage = null)
+            {
+                if (!condition) throw new TravelPlanConsistencyException(errorMessage);
+            }
+
+            static bool NonOverlap(DateTime a1, DateTime a2, DateTime b1, DateTime b2)
+            {
+                Debug.Assert(a1 < a2 && b1 < b2);
+                return a2 < b1 || b2 < a1;
+            }
+            
+
             var plan = _mapper.Map<TravelPlanDto, TravelPlan>(dto);
             plan.Employees = new  List<Employee>();
 
             using (var context = new CarpoolDbContext())
             {
+                async Task<IEnumerable<(DateTime startDate, DateTime endDate)>> GetCarAllocations(int carId)
+                {
+                    var q = await context.TravelPlans.Where(tp => tp.CarId == carId).Select(tp => new { tp.StartDate, tp.EndDate }).ToListAsync();
+                    return q.Select(x => (x.StartDate, x.EndDate));
+                }
+
+                async Task<IEnumerable<(DateTime startDate, DateTime endDate)>> GetEmployeeAllocations(int employeeId)
+                {
+                    var q = await context.TravelPlans.Where(tp => tp.Employees.Any(e => e.Id == employeeId)).Select(tp => new { tp.StartDate, tp.EndDate }).ToListAsync();
+                    return q.Select(x => (x.StartDate, x.EndDate));
+                }
+
                 var employeeIds = JsonSerializer.Deserialize<int[]>(dto.EmployeeIds);
                 Debug.Assert(employeeIds != null && employeeIds.Length > 0);
 
-                foreach (var employeeId in employeeIds)
-                {
-                    var employee = context.Employees.Find(employeeId);
-                    Debug.Assert(employee != null);
+                // validate the new travel plan
+                Assert(dto.StartDate < dto.EndDate, "Start date must precede end date");
+                Assert(dto.StartLocation != dto.EndLocation, "Start and end location must be different");
+                
+                var carAllocs = await GetCarAllocations(dto.CarId);
+                Assert(carAllocs.All(a => NonOverlap(a.startDate, a.endDate, dto.StartDate, dto.EndDate)), "Car is already allocated");
 
+                foreach(var employeeId in employeeIds)
+                {
+                    var employeeAllocs = await GetEmployeeAllocations(employeeId);
+                    Assert(employeeAllocs.All(a => NonOverlap(a.startDate, a.endDate, dto.StartDate, dto.EndDate)), "Employee is already allocated");
+                }
+
+                var employees = await context.Employees.Join(employeeIds, x => x.Id, x => x, (emp, _) => emp).ToListAsync();
+                Assert(employees.Any(x => x.IsDriver), "At least one employee must be a driver");
+                
+                // save the data
+                foreach (var employee in employees)
+                {
                     plan.Employees.Add(employee);
                 }
                 context.TravelPlans.Add(plan);
 
                 await context.SaveChangesAsync();
 
+               
+
             }
+
+
+            
         }
 
         public async Task DeleteTravelPlan(TravelPlan plan)
