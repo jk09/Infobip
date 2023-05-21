@@ -8,8 +8,8 @@ namespace Infobip.Services
         Task AddNewTravelPlan(TravelPlanDto plan);
         Task DeleteTravelPlan(TravelPlan plan);
         Task EditTravelPlan(TravelPlan plan);
-        Task<IEnumerable<Car>> GetUnallocatedCars();
-        Task<IEnumerable<Employee>> GetUnallocatedEmployees();
+        Task<IEnumerable<Car>> GetCars();
+        Task<IEnumerable<Employee>> GetEmployees();
         
         Task<IEnumerable<TravelPlanEvent>> GetTravelPlansEvents();
     }

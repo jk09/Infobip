@@ -16,25 +16,31 @@ namespace Infobip.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Car>> GetUnallocatedCars()
+        public async Task<IEnumerable<Car>> GetCars()
         {
             using (var context = new CarpoolDbContext())
             {
-                var allocatedCars = context.TravelPlans.Select(x => x.CarId);
-                var ans = await context.Cars.Where(c => !allocatedCars.Any(i => i == c.Id)).ToListAsync() ;
-                return ans;
+                // get unallocated cars
+                //var allocatedCars = context.TravelPlans.Select(x => x.CarId);
+                //var ans = await context.Cars.Where(c => !allocatedCars.Any(i => i == c.Id)).ToListAsync() ;
+                //return ans;
+
+                return await context.Cars.ToListAsync();
             }
         }
 
         
 
-        public async Task<IEnumerable<Employee>> GetUnallocatedEmployees()
+        public async Task<IEnumerable<Employee>> GetEmployees()
         {
             using (var context = new CarpoolDbContext())
             {
-                var allocatedEmployees = context.TravelPlans.SelectMany(tp => tp.Employees);
-                var ans = await context.Employees.Where(e => !allocatedEmployees.Any(t => t.Id == e.Id)).ToListAsync();
-                return ans;
+                // get unallocated employees
+                //var allocatedEmployees = context.TravelPlans.SelectMany(tp => tp.Employees);
+                //var ans = await context.Employees.Where(e => !allocatedEmployees.Any(t => t.Id == e.Id)).ToListAsync();
+                //return ans;
+
+                return await context.Employees.ToListAsync();
             }
         }
 

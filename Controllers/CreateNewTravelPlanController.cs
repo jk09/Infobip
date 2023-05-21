@@ -21,17 +21,17 @@ namespace Infobip.Controllers
             _carpoolRepository = carpoolRepository;
         }
 
-        [HttpGet("unallocatedcars")]
+        [HttpGet("cars")]
         public IEnumerable<Car> GetUnallocatedCars()
         {
-            var res = _carpoolRepository.GetUnallocatedCars().Result;
+            var res = _carpoolRepository.GetCars().Result;
             return res.ToList();
         }
 
-        [HttpGet("unallocatedemployees")]
+        [HttpGet("employees")]
         public IEnumerable<Employee> GetEmployees()
         {
-            var res = _carpoolRepository.GetUnallocatedEmployees().Result;
+            var res = _carpoolRepository.GetEmployees().Result;
             return res.ToList();
         }
 

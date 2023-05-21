@@ -12,7 +12,7 @@ export function CreateNewTravelPlan(props) {
 
     useEffect(() => {
         // fetch the data from the backend
-        fetch("/api/createnewtravelplan/unallocatedcars",{method:"GET"})
+        fetch("/api/createnewtravelplan/cars",{method:"GET"})
             .then(data => {
                 return data.json();
             })
@@ -23,7 +23,7 @@ export function CreateNewTravelPlan(props) {
             })
             .catch(err => console.error(err));
 
-        fetch("/api/createnewtravelplan/unallocatedemployees", { method: "GET" })
+        fetch("/api/createnewtravelplan/employees", { method: "GET" })
             .then(data => {
                 return data.json();
                 
