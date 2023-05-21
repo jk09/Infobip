@@ -1,4 +1,5 @@
-﻿using Infobip.Models;
+﻿using AutoMapper;
+using Infobip.Models;
 using Infobip.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
@@ -11,10 +12,13 @@ namespace Infobip.Controllers
     [Route("api/createnewtravelplan")]
     public class CreateNewTravelPlanController : ControllerBase
     {
-        readonly CarpoolRepository _carpoolRepository;
-        public CreateNewTravelPlanController(CarpoolRepository carpoolRepository)
+        private readonly ICarpoolRepository _carpoolRepository;
+        private readonly IMapper _mapper;
+
+        public CreateNewTravelPlanController(ICarpoolRepository carpoolRepository, IMapper mapper)
         {
             _carpoolRepository = carpoolRepository;
+            _mapper = mapper;
         }
 
         [HttpGet("unallocatedcars")]
@@ -32,10 +36,22 @@ namespace Infobip.Controllers
         }
 
         [HttpPost("submit")]
-        public ActionResult Submit([FromForm] TravelPlanDto travelPlan)
+        public ActionResult Submit([FromForm] TravelPlanDto travelPlanDto)
         {
-            var employeeIds = JsonSerializer.Deserialize<int[]>(travelPlan.EmployeeIds);
+            var employeeIds = JsonSerializer.Deserialize<int[]>(travelPlanDto.EmployeeIds);
+            var travelPlan = _mapper.Map<TravelPlanDto, TravelPlan>(travelPlanDto);
+
+
             return Ok();
+        }
+    }
+
+
+    public class MapperProfile : Profile
+    {
+        public MapperProfile()
+        {
+            CreateMap<TravelPlanDto, TravelPlan>();
         }
     }
 }

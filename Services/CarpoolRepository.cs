@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infobip.Services
 {
-    public class CarpoolRepository
+    public class CarpoolRepository : ICarpoolRepository
     {
         private readonly CarpoolDbContext _db;
 

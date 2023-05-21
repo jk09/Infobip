@@ -1,3 +1,5 @@
+using AutoMapper;
+using Infobip.Controllers;
 using Infobip.Models;
 using Infobip.Services;
 
@@ -8,7 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<CarpoolDbContext>();
-builder.Services.AddScoped<CarpoolRepository>();
+builder.Services.AddSingleton<IMapper>(svc =>
+{
+    var config = new MapperConfiguration(cfg => cfg.AddProfile<MapperProfile>());
+    var mapper = config.CreateMapper();
+    return mapper;
+});
+
+builder.Services.AddScoped<ICarpoolRepository, CarpoolRepository>();
 
 var app = builder.Build();
 
