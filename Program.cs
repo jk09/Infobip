@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<CarpoolDbContext>();
+//builder.Services.AddDbContext<CarpoolDbContext>();
 builder.Services.AddSingleton<IMapper>(svc =>
 {
     var config = new MapperConfiguration(cfg => cfg.AddProfile<MapperProfile>());

@@ -1,44 +1,52 @@
-﻿using Infobip.Models;
+﻿using AutoMapper;
+using Infobip.Controllers;
+using Infobip.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using System.Text.Json;
 
 namespace Infobip.Services
 {
     public class CarpoolRepository : ICarpoolRepository
     {
-        private readonly CarpoolDbContext _db;
+        private readonly IMapper _mapper;
 
-        public CarpoolRepository(CarpoolDbContext db)
+        public CarpoolRepository(IMapper mapper)
         {
-            _db = db;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Car>> GetUnallocatedCars()
         {
-
-            var query = from car in _db.Cars
-                        join plan in _db.TravelPlans on car.Id equals plan.CarId into joinGroup
-                        from joinGrp in joinGroup.DefaultIfEmpty()
-                        where joinGrp == null
-                        select car;
-
-
-
-            return await query.ToListAsync();
+            using (var context = new CarpoolDbContext())
+            {
+                return await context.Cars.ToListAsync();
+            }
         }
 
         public async Task<int> GetEmployeesCount()
         {
-            return await _db.Employees.CountAsync();
+            using (var context = new CarpoolDbContext())
+            {
+                return await context.Employees.CountAsync();
+            }
         }
 
         public async Task<int> GetCarsCount()
         {
-            return await _db.Cars.CountAsync();
+            using (var context = new CarpoolDbContext())
+            {
+                return await context.Cars.CountAsync();
+            }
         }
 
         public async Task<int> GetTravelPlansCount()
         {
-            return await _db.TravelPlans.CountAsync();
+            using (var context = new CarpoolDbContext())
+            {
+
+                return await context.TravelPlans.CountAsync();
+            }
         }
 
         public async Task<IEnumerable<Employee>> GetUnallocatedEmployees()
@@ -50,30 +58,47 @@ namespace Infobip.Services
             //            select emp;
 
             //return await query.ToListAsync();
-
-            return await _db.Employees.ToListAsync();
-
+            using (var context = new CarpoolDbContext())
+            {
+                return await context.Employees.ToListAsync();
+            }
         }
 
-        public async Task AddNewTravelPlan(TravelPlan plan)
+        public async Task AddNewTravelPlan(TravelPlanDto dto)
         {
-            _db.TravelPlans.Add(plan);
+          
+            var plan = _mapper.Map<TravelPlanDto, TravelPlan>(dto);
+            plan.Employees = new  List<Employee>();
 
-            await _db.SaveChangesAsync();
+            using (var context = new CarpoolDbContext())
+            {
+                var employeeIds = JsonSerializer.Deserialize<int[]>(dto.EmployeeIds);
+                Debug.Assert(employeeIds != null && employeeIds.Length > 0);
+
+                foreach (var employeeId in employeeIds)
+                {
+                    var employee = context.Employees.Find(employeeId);
+                    Debug.Assert(employee != null);
+
+                    plan.Employees.Add(employee);
+                }
+
+                context.TravelPlans.Add(plan);
+
+                await context.SaveChangesAsync();
+
+            }
         }
 
         public async Task DeleteTravelPlan(TravelPlan plan)
         {
-            _db.TravelPlans.Remove(plan);
-
-            await _db.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
         public async Task EditTravelPlan(TravelPlan plan)
         {
-            _db.TravelPlans.Attach(plan);
-            _db.Entry(plan).State = EntityState.Modified;
-            await _db.SaveChangesAsync();
+            throw new NotImplementedException();
+
         }
 
     }

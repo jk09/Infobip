@@ -12,7 +12,7 @@ namespace Infobip.Controllers
     [Route("api/createnewtravelplan")]
     public class CreateNewTravelPlanController : ControllerBase
     {
-        private readonly ICarpoolRepository _carpoolRepository;
+        private readonly ICarpoolRepository _carpoolRepository; 
         private readonly IMapper _mapper;
 
         public CreateNewTravelPlanController(ICarpoolRepository carpoolRepository, IMapper mapper)
@@ -36,11 +36,9 @@ namespace Infobip.Controllers
         }
 
         [HttpPost("submit")]
-        public ActionResult Submit([FromForm] TravelPlanDto travelPlanDto)
+        public async Task<ActionResult> Submit([FromForm] TravelPlanDto travelPlan)
         {
-            var employeeIds = JsonSerializer.Deserialize<int[]>(travelPlanDto.EmployeeIds);
-            var travelPlan = _mapper.Map<TravelPlanDto, TravelPlan>(travelPlanDto);
-
+            await _carpoolRepository.AddNewTravelPlan(travelPlan);
 
             return Ok();
         }

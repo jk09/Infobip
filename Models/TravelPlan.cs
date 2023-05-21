@@ -1,4 +1,6 @@
-﻿namespace Infobip.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Infobip.Models
 {
     public class TravelPlan
     {
@@ -8,13 +10,7 @@
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int CarId { get; set; }
+        public ICollection<Employee> Employees { get; set; }
 
-    }
-
-    public class TravelPlanEmployees
-    {
-        public int Id { get; set; }
-        public int TravelPlanId { get; set; }
-        public int EmployeeId { get; set; }
     }
 }

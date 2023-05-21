@@ -9,12 +9,11 @@ namespace Infobip.Models
         public DbSet<Car> Cars { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<TravelPlan> TravelPlans { get; set; }
-        public DbSet<TravelPlanEmployees> TravelPlanEmployees { get; set; }
 
         public string DbPath { get; }
 
 
-        public CarpoolDbContext(DbContextOptions<CarpoolDbContext> opts):base(opts)
+        public CarpoolDbContext()
         {
             var folder = Environment.SpecialFolder.LocalApplicationData;
             var path = Environment.GetFolderPath(folder);
