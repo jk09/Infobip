@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Configuration.Annotations;
 using Infobip.Controllers;
 using Infobip.Models;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
@@ -94,12 +95,33 @@ namespace Infobip.Services
                 Assert(dto.StartLocation != dto.EndLocation, "Start and end location must be different");
                 
                 var carAllocs = await GetCarAllocations(dto.CarId);
-                Assert(carAllocs.All(a => NonOverlap(a.startDate, a.endDate, dto.StartDate, dto.EndDate)), "Car is already allocated");
+
+                try
+                {
+                    Assert(carAllocs.All(a => NonOverlap(a.startDate, a.endDate, dto.StartDate, dto.EndDate)));
+                }
+                catch (TravelPlanConsistencyException)
+                {
+                    var car = await context.Cars.FindAsync(dto.CarId);
+                    Debug.Assert(car != null);
+
+                    Assert(false, $"Car {car.Name} is already allocated");
+                }
 
                 foreach(var employeeId in employeeIds)
                 {
                     var employeeAllocs = await GetEmployeeAllocations(employeeId);
-                    Assert(employeeAllocs.All(a => NonOverlap(a.startDate, a.endDate, dto.StartDate, dto.EndDate)), "Employee is already allocated");
+                    try
+                    {
+                        Assert(employeeAllocs.All(a => NonOverlap(a.startDate, a.endDate, dto.StartDate, dto.EndDate)));
+                    }
+                    catch (TravelPlanConsistencyException)
+                    {
+                        var employee = await context.Employees.FindAsync(employeeId);
+                        Debug.Assert(employee != null);
+
+                        Assert(false, $"Employee {employee.Name} is already allocated");
+                    }
                 }
 
                 var employees = await context.Employees.Join(employeeIds, x => x.Id, x => x, (emp, _) => emp).ToListAsync();
