@@ -2,6 +2,8 @@
 using Infobip.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Infobip.Controllers
 {
@@ -30,24 +32,10 @@ namespace Infobip.Controllers
         }
 
         [HttpPost("submit")]
-        [Consumes("multipart/form-data")]
         public ActionResult Submit([FromForm] TravelPlanDto travelPlan)
         {
-
+            var employeeIds = JsonSerializer.Deserialize<int[]>(travelPlan.EmployeeIds);
             return Ok();
         }
-    }
-
-    public class TravelPlanDto
-    {
-        public int Id { get; set; }
-        public string StartLocation { get; set; }
-        public string EndLocation { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-
-        public int CarId { get; set; }
-
-        public string EmployeeIds { get; set; }
     }
 }
