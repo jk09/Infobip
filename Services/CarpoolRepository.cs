@@ -88,7 +88,7 @@ namespace Infobip.Services
                 }
 
                 var employeeIds = JsonSerializer.Deserialize<int[]>(dto.EmployeeIds);
-                Debug.Assert(employeeIds != null && employeeIds.Length > 0);
+                Debug.Assert(employeeIds != null);
 
                 // validate the new travel plan
                 Assert(dto.StartDate < dto.EndDate, "Start date must precede end date");
