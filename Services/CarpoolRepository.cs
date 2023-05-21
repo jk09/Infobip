@@ -20,7 +20,9 @@ namespace Infobip.Services
         {
             using (var context = new CarpoolDbContext())
             {
-                return await context.Cars.ToListAsync();
+                var allocatedCars = context.TravelPlans.Select(x => x.CarId);
+                var ans = await context.Cars.Where(c => !allocatedCars.Any(i => i == c.Id)).ToListAsync() ;
+                return ans;
             }
         }
 
@@ -53,8 +55,8 @@ namespace Infobip.Services
         {
             using (var context = new CarpoolDbContext())
             {
-                var travellingEmployees = context.TravelPlans.SelectMany(tp => tp.Employees);
-                var ans = await context.Employees.Where(e => !travellingEmployees.Any(t => t.Id == e.Id)).ToListAsync();
+                var allocatedEmployees = context.TravelPlans.SelectMany(tp => tp.Employees);
+                var ans = await context.Employees.Where(e => !allocatedEmployees.Any(t => t.Id == e.Id)).ToListAsync();
                 return ans;
             }
         }
@@ -77,7 +79,6 @@ namespace Infobip.Services
 
                     plan.Employees.Add(employee);
                 }
-                throw null;
                 context.TravelPlans.Add(plan);
 
                 await context.SaveChangesAsync();
