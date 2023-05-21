@@ -14,20 +14,24 @@ export function CreateNewTravelPlan(props) {
         // fetch the data from the backend
         fetch("/api/createnewtravelplan/unallocatedcars",{method:"GET"})
             .then(data => {
-                let json = data.json();
-                console.log("cars data=", json);
-                return json;
+                return data.json();
             })
-            .then(json => setCars(json))
+            .then(json => {
+                console.log("cars data=", json);
+
+                setCars(json);
+            })
             .catch(err => console.error(err));
 
         fetch("/api/createnewtravelplan/unallocatedemployees", { method: "GET" })
             .then(data => {
-                let json = data.json();
-                console.log("employee data=", json);
-                return json;
+                return data.json();
+                
             })
-            .then(json => setEmployees(json))
+            .then(json => {
+                console.log("employee data=", json);
+                setEmployees(json);
+            })
             .catch(err => console.error(err));
     }, []);
 

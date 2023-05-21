@@ -42,14 +42,26 @@ namespace Infobip.Controllers
 
             return Ok();
         }
+
+      
     }
 
-
-    public class MapperProfile : Profile
+    [ApiController]
+    [Route("api/travelplans")]
+    public class TravelPlansController : ControllerBase
     {
-        public MapperProfile()
+        private readonly ICarpoolRepository _carpoolRepository;
+
+        public TravelPlansController(ICarpoolRepository carpoolRepository)
         {
-            CreateMap<TravelPlanDto, TravelPlan>();
+            _carpoolRepository = carpoolRepository;
+
+        }
+
+        [HttpGet("events")]
+        public async Task<IEnumerable<TravelPlanEvent>> GetTravelPlansEvents()
+        {
+            return await _carpoolRepository.GetTravelPlansEvents();
         }
     }
 }
