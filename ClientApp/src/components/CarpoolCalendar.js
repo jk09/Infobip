@@ -26,7 +26,7 @@ function eventPropGetter(event) {
     return { style: eventStyles[idx] };
 }
 
-export function CarpoolCalendar(props) {
+export function CarpoolCalendar({ onSelectEvent}) {
     let [carpoolEvents, setCarpoolEvents] = useState([]);
 
     useEffect(
@@ -47,11 +47,13 @@ export function CarpoolCalendar(props) {
     return (
         <div>
             <Calendar
-                localizer={localizer} views={['month','agenda'] }
+                localizer={localizer}
+                views={['month', 'agenda']}
                 events={carpoolEvents}
                 startAccessor="start"
                 endAccessor="end"
                 eventPropGetter={eventPropGetter}
+                onSelectEvent={onSelectEvent}
                 style={{ height: 500 }} />
         </div>
     );

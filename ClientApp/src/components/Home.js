@@ -10,6 +10,10 @@ import { CarpoolCalendar } from './CarpoolCalendar';
 
 export const localizer = momentLocalizer(moment)
 
+function onSelectEvent(event) {
+    console.log("onSelectEvent", event);
+}
+
 export function Home(props) {
 
 
@@ -44,7 +48,7 @@ export function Home(props) {
                 <hr />
                 <CreateNewTravelPlan />
                 
-                <CarpoolCalendar />
+                <CarpoolCalendar onSelectEvent={onSelectEvent} />
             </div>
         </div>
 
