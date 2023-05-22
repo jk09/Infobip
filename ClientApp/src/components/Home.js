@@ -17,10 +17,13 @@ export function Home(props) {
     let [isOpen, setIsOpen] = useState(false);
     let [mode, setMode] = useState(null);
     let [editDisabled, setEditDisabled] = useState(true);
+
     function onSelectEvent(event) {
         console.log("onSelectEvent", event);
         setEditDisabled(false);
     }
+
+   
 
     function onButtonCreateNewTravelPlan() {
         setMode("new");

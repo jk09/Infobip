@@ -137,11 +137,15 @@ export function CreateNewTravelPlan({ mode, color, isOpen }) {
 
                             </FormGroup>
 
-
-                            <Button type="submit">
-                                Submit
-                            </Button>
-
+                            <div>
+                                <Button type="submit" color="success">
+                                    Submit
+                                </Button>
+                                    {" "}
+                                <Button type="reset" color="secondary">
+                                    Cancel
+                                </Button>
+                            </div>
                             <Alert color="warning" style={{ marginTop: '1rem' }} isOpen={error !== null}>{error}</Alert>
                           
                         </Form>
