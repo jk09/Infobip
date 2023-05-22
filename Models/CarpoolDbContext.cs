@@ -27,6 +27,14 @@ namespace Infobip.Models
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity("Infobip.Models.Employee", b =>
+            {
+                b.HasOne("Infobip.Models.TravelPlan", null)
+                    .WithMany("Employees")
+                    .HasForeignKey("TravelPlanId")
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
+
             SeedData(modelBuilder);
 
         }

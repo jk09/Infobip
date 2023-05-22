@@ -171,7 +171,7 @@ namespace Infobip.Services
 
                         var existingPlan = await context.TravelPlans.FindAsync(dto.Id);
                         Debug.Assert(existingPlan != null);
-                        existingPlan.Employees.
+                        //existingPlan.Employees.
                         context.TravelPlans.Remove(existingPlan);
                         
                         await context.SaveChangesAsync();
