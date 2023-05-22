@@ -2,6 +2,7 @@
 import { Calendar } from 'react-big-calendar';
 
 import { localizer } from './Home';
+import  md5 from 'blueimp-md5';
 
 const eventStyles = [
     { backgroundColor: "#0d6efd", color: "white" }, // primary
@@ -17,9 +18,13 @@ const eventStyles = [
 ];
 
 
+
 function eventPropGetter(event) {
     console.log('eventPropGetter of', event);
-    return { style: eventStyles[5]  }
+    let hash = md5(event.title + event.start + event.end);
+    
+    let idx = (parseInt(hash[0], 36) - 10)%eventStyles.length;
+    return { style: eventStyles[idx] };
 }
 
 export function CarpoolCalendar(props) {
