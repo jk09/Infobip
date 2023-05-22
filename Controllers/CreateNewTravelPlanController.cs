@@ -45,7 +45,7 @@ namespace Infobip.Controllers
 
                 return Ok();
             }
-            catch (TravelPlanValidationException ex)
+            catch (Exception ex)
             {
                 return Problem(ex.Message, statusCode: 500);
             }
@@ -56,11 +56,13 @@ namespace Infobip.Controllers
         {
             try
             {
-                //await _carpoolRepository.UpdateTravelPlan(id, travelPlan);
+
+                travelPlan.Id = id;
+                await _carpoolRepository.UpdateTravelPlan(travelPlan);
 
                 return Ok();
             }
-            catch (TravelPlanValidationException ex)
+            catch (Exception ex)
             {
                 return Problem(ex.Message, statusCode: 500);
             }
