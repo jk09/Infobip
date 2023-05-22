@@ -214,7 +214,7 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
                                 <Label for="employees" sm={2}>Employees</Label>
                                 <Col sm={5}>
                                     <Input id="employees" type="select" multiple value={selectedEmployees} onChange={onSelectedEmployeesChanged }>
-                                        {employees.map(emp => <option key={emp.id} id={emp.id} value={emp.id}>{emp.name}</option>) }
+                                        {employees.map(emp => <option key={emp.id} id={emp.id} value={emp.id}>{emp.name} { emp.isDriver ? '- driver' : '' }</option>) }
                                     </Input>
 
                                 </Col>
