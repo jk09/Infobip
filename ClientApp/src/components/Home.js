@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { momentLocalizer } from 'react-big-calendar'
-import moment from 'moment'
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CreateNewTravelPlan } from './CreateNewTravelPlan';
@@ -10,7 +8,6 @@ import { ButtonToolbar } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input, Col, Collapse, Card, CardBody, FormFeedback, Alert } from 'reactstrap';
 
 
-export const localizer = momentLocalizer(moment)
 
 
 export function Home(props) {
@@ -45,10 +42,12 @@ export function Home(props) {
     }
 
     function onCancel(event) {
-        setIsOpen(false);
+        //setIsOpen(false);
 
-        setCreateDisabled(false);
-        setEditDisabled(true);
+        //setCreateDisabled(false);
+        //setEditDisabled(true);
+        window.location.reload();
+
     }
 
     return (

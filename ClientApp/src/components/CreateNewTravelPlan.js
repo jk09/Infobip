@@ -8,10 +8,13 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
     let [cars, setCars] = useState([]);
     let [employees, setEmployees] = useState([]); 
     let [error, setError] = useState(null);
-    let [startLocation, setStartLocation] = useState(null);
-    let [endLocation, setEndLocation] = useState(null);
-    let [startDate, setStartDate] = useState(null);
-    let [endDate, setEndDate] = useState(null);
+    let [startLocation, setStartLocation] = useState("");
+    let [endLocation, setEndLocation] = useState("");
+    let [startDate, setStartDate] = useState("");
+    let [endDate, setEndDate] = useState("");
+    let [selectedCar, setSelectedCar] = useState("");
+    let [selectedEmployees, setSelectedEmployees] = useState([]);
+
 
     useEffect(() => {
         // fetch the data from the backend
@@ -45,9 +48,19 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
 
                     setStartLocation(json.startLocation);
                     setEndLocation(json.endLocation);
-                    setStartDate(json.startDate);
-                    setEndDate(json.endDate);
 
+                    function fmtdate(date) {
+                        return moment(date).format("YYYY-MM-DD");
+                    }
+
+
+                    setStartDate(fmtdate(json.startDate));
+                    setEndDate(fmtdate(json.endDate));
+
+                    let car = json.carId;
+                    setSelectedCar(car);
+                    let emps = json.employees.map(x => x.id);
+                    setSelectedEmployees(emps);
                     
                 });
         }
@@ -66,9 +79,9 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
         let carId = [...carOptions].filter(x => x.selected)[0].getAttribute("id");
         console.log("selected car id", carId);
 
-        let employeeOptions = event.target.querySelectorAll('#employees option');
-        console.log('employeeOptions', employeeOptions);
-        let selectedEmployeeIds = [...employeeOptions].filter(x => x.selected).map(x => parseInt(x.id));
+        let empOpts = event.target.querySelectorAll('#employees option');
+        console.log('employeeOptions', empOpts);
+        let empIds = [...empOpts].filter(x => x.selected).map(x => parseInt(x.id));
 
         let data = new FormData(event.target);
         data.append("Id", 0);
@@ -78,9 +91,9 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
         data.append("EndDate", endDate);
 
         data.append("CarId", carId);
-        data.append("EmployeeIds", JSON.stringify(selectedEmployeeIds));
+        data.append("EmployeeIds", JSON.stringify(empIds));
 
-        console.log("submitting new travel plan data=", data, startLocation, endLocation, startDate, endDate, carId, JSON.stringify(selectedEmployeeIds));
+        console.log("submitting new travel plan data=", data, startLocation, endLocation, startDate, endDate, carId, JSON.stringify(empIds));
         fetch("/api/createnewtravelplan/submit", { method: "POST", body: data })
             .then(resp => {
                 console.log('submit fetch response', resp);
@@ -99,7 +112,38 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
             })
             .catch(err=>console.error(err));
     }
-    
+
+    function onStartLocationChange(e) {
+        setStartLocation(e.target.value);
+    }
+
+    function onEndLocationChange(e) {
+        setEndLocation(e.target.value);
+    }
+
+    function onStartDateChanged(e) {
+        setStartDate(e.target.value);
+    }
+
+    function onEndDateChanged(e) {
+        setEndDate(e.target.value);
+    }
+
+    function onSelectedCarChanged(e) {
+        setSelectedCar(e.target.value);
+    }
+
+    function onSelectedEmployeesChanged(e) {
+        const options = e.target.options; 
+        const values = []; 
+        for (let i = 0; i < options.length; i++) { 
+            if (options[i].selected) { 
+                values.push(options[i].value); 
+            }
+        }
+        setSelectedEmployees(values);
+    }
+
 
     return (
         <div>
@@ -113,32 +157,32 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
                             <FormGroup row>
                                 <Label for="startLocation" sm={2}>Start location</Label>
                                 <Col sm={5}>
-                                    <Input id="startLocation" value={startLocation} placeholder="The start location of the travel"></Input></Col>
+                                    <Input id="startLocation" value={startLocation} onChange={onStartLocationChange} placeholder="The start location of the travel"></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label for="endLocation" sm={2}>End location</Label>
                                 <Col sm={5}>
-                                    <Input id="endLocation" placeholder="The end location of the travel" value={endLocation}></Input></Col>
+                                    <Input id="endLocation" placeholder="The end location of the travel" value={endLocation} onChange={onEndLocationChange}></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label for="startDate" sm={2}>Start date</Label>
                                 <Col sm={5}>
-                                    <Input id="startDate" type="date" placeholder="The start date of the travel" value={moment(startDate).format("YYYY-MM-DD")}></Input></Col>
+                                    <Input id="startDate" type="date" placeholder="The start date of the travel" value={startDate} onChange={onStartDateChanged}></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label for="endDate" sm={2}>End date</Label>
                                 <Col sm={5}>
-                                    <Input id="endDate" type="date" placeholder="The end date of the travel" value={moment(endDate).format("YYYY-MM-DD")}></Input></Col>
+                                    <Input id="endDate" type="date" placeholder="The end date of the travel" value={endDate} onChange={onEndDateChanged }></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label for="car" sm={2}>Car</Label>
                                 <Col sm={5}>
-                                    <Input id="car" type="select"  >
-                                        {cars.map(car => <option key={car.id} id={car.id}>{ car.name }</option>)}
+                                    <Input id="car" type="select" value={selectedCar} onChange={onSelectedCarChanged }>
+                                        {cars.map(car => <option key={car.id} id={car.id} value={car.id }>{ car.name }</option>)}
                                    </Input>
                                 </Col>
                             </FormGroup>
@@ -147,8 +191,8 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
                             <FormGroup row>
                                 <Label for="employees" sm={2}>Employees</Label>
                                 <Col sm={5}>
-                                    <Input id="employees" type="select" multiple>
-                                        {employees.map(emp => <option key={emp.id} id={emp.id }>{emp.name}</option>) }
+                                    <Input id="employees" type="select" multiple value={selectedEmployees} onChange={onSelectedEmployeesChanged }>
+                                        {employees.map(emp => <option key={emp.id} id={emp.id} value={emp.id}>{emp.name}</option>) }
                                     </Input>
 
                                 </Col>
