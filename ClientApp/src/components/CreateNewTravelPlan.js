@@ -1,12 +1,17 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { Button, Form, FormGroup, Label, Input, Col, Collapse, Card, CardBody, FormFeedback,Alert } from 'reactstrap';
 
+import moment from 'moment'
 
 export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, onCancel }) {
 
     let [cars, setCars] = useState([]);
     let [employees, setEmployees] = useState([]); 
     let [error, setError] = useState(null);
+    let [startLocation, setStartLocation] = useState(null);
+    let [endLocation, setEndLocation] = useState(null);
+    let [startDate, setStartDate] = useState(null);
+    let [endDate, setEndDate] = useState(null);
 
     useEffect(() => {
         // fetch the data from the backend
@@ -37,6 +42,13 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
                 .then(data => data.json())
                 .then(json => {
                     console.log("got editable travel plan", json);
+
+                    setStartLocation(json.startLocation);
+                    setEndLocation(json.endLocation);
+                    setStartDate(json.startDate);
+                    setEndDate(json.endDate);
+
+                    
                 });
         }
     }, [mode, selectedEvent]);
@@ -101,25 +113,25 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
                             <FormGroup row>
                                 <Label for="startLocation" sm={2}>Start location</Label>
                                 <Col sm={5}>
-                                    <Input id="startLocation" placeholder="The start location of the travel"  ></Input></Col>
+                                    <Input id="startLocation" value={startLocation} placeholder="The start location of the travel"></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label for="endLocation" sm={2}>End location</Label>
                                 <Col sm={5}>
-                                    <Input id="endLocation" placeholder="The end location of the travel" ></Input></Col>
+                                    <Input id="endLocation" placeholder="The end location of the travel" value={endLocation}></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label for="startDate" sm={2}>Start date</Label>
                                 <Col sm={5}>
-                                    <Input id="startDate" type="date" placeholder="The start date of the travel" ></Input></Col>
+                                    <Input id="startDate" type="date" placeholder="The start date of the travel" value={moment(startDate).format("YYYY-MM-DD")}></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label for="endDate" sm={2}>End date</Label>
                                 <Col sm={5}>
-                                    <Input id="endDate" type="date" placeholder="The end date of the travel" ></Input></Col>
+                                    <Input id="endDate" type="date" placeholder="The end date of the travel" value={moment(endDate).format("YYYY-MM-DD")}></Input></Col>
                             </FormGroup>
 
                             <FormGroup row>

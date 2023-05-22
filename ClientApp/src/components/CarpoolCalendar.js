@@ -1,8 +1,13 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { Calendar } from 'react-big-calendar';
 
-import { localizer } from './Home';
-import  md5 from 'blueimp-md5';
+
+import { momentLocalizer } from 'react-big-calendar'
+import moment from 'moment'
+
+import md5 from 'blueimp-md5';
+
+const localizer = momentLocalizer(moment)
 
 const eventStyles = [
     { backgroundColor: "#0d6efd", color: "white" }, // primary
