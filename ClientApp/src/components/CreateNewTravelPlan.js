@@ -93,24 +93,46 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
         data.append("CarId", carId);
         data.append("EmployeeIds", JSON.stringify(empIds));
 
-        console.log("submitting new travel plan data=", data, startLocation, endLocation, startDate, endDate, carId, JSON.stringify(empIds));
-        fetch("/api/createnewtravelplan/submit", { method: "POST", body: data })
-            .then(resp => {
-                console.log('submit fetch response', resp);
-                if (resp.ok) {
-                    window.location.reload();        
-                }
-                else {
-                    resp.json().then(function (data) {
+        console.log(`${mode==='new' ? 'submitting':'updating'}  travel plan data=`, data, startLocation, endLocation, startDate, endDate, carId, JSON.stringify(empIds));
 
-                        console.log("submit fetch response data", data);
-                        setError(data.detail || JSON.stringify(data.errors));
+        if (mode === "new") {
 
-                    });
-                }
+            fetch("/api/createnewtravelplan/submit", { method: "POST", body: data })
+                .then(resp => {
+                    console.log('submit fetch response', resp);
+                    if (resp.ok) {
+                        window.location.reload();
+                    }
+                    else {
+                        resp.json().then(function (data) {
 
-            })
-            .catch(err=>console.error(err));
+                            console.log("submit fetch response data", data);
+                            setError(data.detail || JSON.stringify(data.errors));
+
+                        });
+                    }
+
+                })
+                .catch(err => console.error(err));
+        } else if (mode === "edit") {
+            fetch(`/api/createnewtravelplan/update/${selectedEvent.id}`, { method: "PUT", body: data })
+                .then(resp => {
+                    console.log('submit fetch response', resp);
+                    if (resp.ok) {
+                        window.location.reload();
+                    }
+                    else {
+                        resp.json().then(function (data) {
+
+                            console.log("submit fetch response data", data);
+                            setError(data.detail || JSON.stringify(data.errors));
+
+                        });
+                    }
+
+                })
+                .catch(err => console.error(err));
+        }
     }
 
     function onStartLocationChange(e) {

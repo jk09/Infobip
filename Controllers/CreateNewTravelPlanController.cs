@@ -51,7 +51,22 @@ namespace Infobip.Controllers
             }
         }
 
-      
+        [HttpPut("update/{id}")]
+        public async Task<ActionResult> Update(int id, [FromForm] TravelPlanDto travelPlan)
+        {
+            try
+            {
+                //await _carpoolRepository.UpdateTravelPlan(id, travelPlan);
+
+                return Ok();
+            }
+            catch (TravelPlanValidationException ex)
+            {
+                return Problem(ex.Message, statusCode: 500);
+            }
+        }
+
+
     }
 
     [ApiController]
