@@ -4,6 +4,7 @@ using Infobip.Controllers;
 using Infobip.Models;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Text.Json;
@@ -181,8 +182,13 @@ namespace Infobip.Services
                         var updatedPlan = _mapper.Map<TravelPlanDto, TravelPlan>(dto);
                         updatedPlan.Id = default;
 
+                        var employeeIds = JsonSerializer.Deserialize<int[]>(dto.EmployeeIds).ToList();
+
+                        var employees = await context.Employees.Where(e => employeeIds.Contains(e.Id)).ToListAsync();
+                        updatedPlan.Employees = employees;
                         context.TravelPlans.Add(updatedPlan);
 
+                        
                         await context.SaveChangesAsync();
 
                         tran.Commit();
