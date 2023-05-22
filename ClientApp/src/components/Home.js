@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
@@ -6,16 +6,31 @@ import moment from 'moment'
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CreateNewTravelPlan } from './CreateNewTravelPlan';
 import { CarpoolCalendar } from './CarpoolCalendar';
+import { ButtonToolbar } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Col, Collapse, Card, CardBody, FormFeedback, Alert } from 'reactstrap';
 
 
 export const localizer = momentLocalizer(moment)
 
-function onSelectEvent(event) {
-    console.log("onSelectEvent", event);
-}
 
 export function Home(props) {
+    let [isOpen, setIsOpen] = useState(false);
+    let [mode, setMode] = useState(null);
+    let [editDisabled, setEditDisabled] = useState(true);
+    function onSelectEvent(event) {
+        console.log("onSelectEvent", event);
+        setEditDisabled(false);
+    }
 
+    function onButtonCreateNewTravelPlan() {
+        setMode("new");
+        setIsOpen(prev => !prev);
+    }
+
+    function onButtonEditTravelPlan() {
+        setMode("edit");
+        setIsOpen(prev => !prev);
+    }
 
     return (
         <div>
@@ -46,8 +61,15 @@ export function Home(props) {
                 <h2>Carpool</h2>
 
                 <hr />
-                <CreateNewTravelPlan />
-                
+                <ButtonToolbar>
+                    <Button color="primary" style={{ marginBottom: '1rem' }} onClick={onButtonCreateNewTravelPlan}>Create new travel plan</Button>
+                    &emsp;
+                    <Button color="secondary" style={{ marginBottom: '1rem' }} disabled={editDisabled} onClick={onButtonEditTravelPlan}>Edit travel plan</Button>
+
+                </ButtonToolbar>
+
+                <CreateNewTravelPlan mode={mode} isOpen={isOpen}  />
+
                 <CarpoolCalendar onSelectEvent={onSelectEvent} />
             </div>
         </div>

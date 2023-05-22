@@ -2,9 +2,8 @@
 import { Button, Form, FormGroup, Label, Input, Col, Collapse, Card, CardBody, FormFeedback,Alert } from 'reactstrap';
 
 
-export function CreateNewTravelPlan(props) {
+export function CreateNewTravelPlan({ mode, color, isOpen }) {
 
-    let [isOpen, setIsOpen] = useState(false);
     let [cars, setCars] = useState([]);
     let [employees, setEmployees] = useState([]); 
     let [error, setError] = useState(null);
@@ -85,7 +84,7 @@ export function CreateNewTravelPlan(props) {
 
     return (
         <div>
-            <Button color="primary" style={{ marginBottom: '1rem' }} onClick={() => setIsOpen(prev => !prev)}>Create new travel plan</Button>
+         
 
             <Collapse isOpen={isOpen}>
                 <Card>
