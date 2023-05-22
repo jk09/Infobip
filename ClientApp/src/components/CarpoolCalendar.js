@@ -26,11 +26,11 @@ function eventPropGetter(event) {
     return { style: eventStyles[idx] };
 }
 
-export function CarpoolCalendar({ onSelectEventOut }) {
+export function CarpoolCalendar({ onSelectEvent }) {
     let [carpoolEvents, setCarpoolEvents] = useState([]);
 
-    function onSelectEvent(event) {
-        onSelectEventOut(event);
+    function onSelectEventLocal(event) {
+        onSelectEvent(event);
 
     }
 
@@ -58,7 +58,7 @@ export function CarpoolCalendar({ onSelectEventOut }) {
                 startAccessor="start"
                 endAccessor="end"
                 eventPropGetter={eventPropGetter}
-                onSelectEvent={onSelectEvent}
+                onSelectEvent={onSelectEventLocal}
                 style={{ height: 500 }} />
 
         </div>

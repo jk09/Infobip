@@ -2,7 +2,7 @@
 import { Button, Form, FormGroup, Label, Input, Col, Collapse, Card, CardBody, FormFeedback,Alert } from 'reactstrap';
 
 
-export function CreateNewTravelPlan({ mode, color, isOpen }) {
+export function CreateNewTravelPlan({ mode, color, isOpen, onSubmit, onCancel }) {
 
     let [cars, setCars] = useState([]);
     let [employees, setEmployees] = useState([]); 
@@ -138,11 +138,11 @@ export function CreateNewTravelPlan({ mode, color, isOpen }) {
                             </FormGroup>
 
                             <div>
-                                <Button type="submit" color="success">
+                                <Button type="submit" color="success" onClick={onSubmit }>
                                     Submit
                                 </Button>
                                     {" "}
-                                <Button type="reset" color="secondary">
+                                <Button type="reset" color="secondary" onClick={onCancel }>
                                     Cancel
                                 </Button>
                             </div>

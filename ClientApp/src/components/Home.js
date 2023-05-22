@@ -16,6 +16,7 @@ export const localizer = momentLocalizer(moment)
 export function Home(props) {
     let [isOpen, setIsOpen] = useState(false);
     let [mode, setMode] = useState(null);
+    let [createDisabled, setCreateDisabled] = useState(false);
     let [editDisabled, setEditDisabled] = useState(true);
 
     function onSelectEvent(event) {
@@ -26,13 +27,26 @@ export function Home(props) {
    
 
     function onButtonCreateNewTravelPlan() {
+        setEditDisabled(true);
+
         setMode("new");
-        setIsOpen(prev => !prev);
+        setIsOpen(true);
     }
 
+
     function onButtonEditTravelPlan() {
+        setCreateDisabled(true);
+
         setMode("edit");
-        setIsOpen(prev => !prev);
+        setIsOpen(true);
+
+    }
+
+    function onCancel(event) {
+        setIsOpen(false);
+
+        setCreateDisabled(false);
+        setEditDisabled(true);
     }
 
     return (
@@ -65,15 +79,15 @@ export function Home(props) {
 
                 <hr />
                 <ButtonToolbar>
-                    <Button color="primary" style={{ marginBottom: '1rem' }} onClick={onButtonCreateNewTravelPlan}>Create new travel plan</Button>
+                    <Button color="primary" type="button" style={{ marginBottom: '1rem' }} disabled={ createDisabled} onClick={onButtonCreateNewTravelPlan}>Create new travel plan</Button>
                     &emsp;
-                    <Button color="secondary" style={{ marginBottom: '1rem' }} disabled={editDisabled} onClick={onButtonEditTravelPlan}>Edit travel plan</Button>
+                    <Button color="secondary" type="button" style={{ marginBottom: '1rem' }} disabled={editDisabled} onClick={onButtonEditTravelPlan}>Edit travel plan</Button>
 
                 </ButtonToolbar>
 
-                <CreateNewTravelPlan mode={mode} isOpen={isOpen}  />
+                <CreateNewTravelPlan mode={mode} isOpen={isOpen} onCancel={onCancel}  />
 
-                <CarpoolCalendar onSelectEvent={onSelectEvent} />
+                <CarpoolCalendar onSelectEvent={onSelectEvent} onCancel={onCancel} />
             </div>
         </div>
 
