@@ -3,18 +3,24 @@ import { Calendar } from 'react-big-calendar';
 
 import { localizer } from './Home';
 
-const bootstrapColors = [
-    '#0275d8', // primary blue
-    '#5cb85c', // success green
-    '#5bc0de', // info cyan
-    '#f0ad4e', // warning orange
-    '#d9534f', // danger red
-    '#292b2c', // dark gray
-    '#f7f7f7', // light gray
-    '#6c757d', // secondary gray
-    '#28a745', // success green (Bootstrap 5)
-    '#dc3545' // danger red (Bootstrap 5)
+const eventStyles = [
+    { backgroundColor: "#0d6efd", color: "white" }, // primary
+    { backgroundColor: "#6c757d", color: "white" }, // secondary
+    { backgroundColor: "#198754", color: "white" }, // success
+    { backgroundColor: "#dc3545", color: "white" }, // danger
+    { backgroundColor: "#ffc107", color: "black" }, // warning
+    { backgroundColor: "#0dcaf0", color: "black" }, // info
+    { backgroundColor: "#f8f9fa", color: "black" }, // light
+    { backgroundColor: "#212529", color: "white" }, // dark
+    { backgroundColor: "#e9ecef", color: "black" }, // gray-200
+    { backgroundColor: "#495057", color: "white" } // gray-600
 ];
+
+
+function eventPropGetter(event) {
+    console.log('eventPropGetter of', event);
+    return { style: eventStyles[5]  }
+}
 
 export function CarpoolCalendar(props) {
     let [carpoolEvents, setCarpoolEvents] = useState([]);
@@ -33,6 +39,7 @@ export function CarpoolCalendar(props) {
                 });
         },
         []);
+    
     return (
         <div>
             <Calendar
@@ -40,6 +47,7 @@ export function CarpoolCalendar(props) {
                 events={carpoolEvents}
                 startAccessor="start"
                 endAccessor="end"
+                eventPropGetter={eventPropGetter}
                 style={{ height: 500 }} />
         </div>
     );
