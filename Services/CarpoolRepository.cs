@@ -38,7 +38,14 @@ namespace Infobip.Services
             }
         }
 
-        
+        public async Task<TravelPlan?> GetTravelPlan(int planId)
+        {
+            using (var context = new CarpoolDbContext())
+            {
+                return await context.TravelPlans.Include(tp=>tp.Employees).FirstOrDefaultAsync(x => x.Id == planId);
+            }
+        }
+
 
         public async Task<IEnumerable<Employee>> GetEmployees()
         {

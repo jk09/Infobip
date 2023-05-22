@@ -2,12 +2,11 @@
 import { Button, Form, FormGroup, Label, Input, Col, Collapse, Card, CardBody, FormFeedback,Alert } from 'reactstrap';
 
 
-export function CreateNewTravelPlan({ mode, color, isOpen, onSubmit, onCancel }) {
+export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, onCancel }) {
 
     let [cars, setCars] = useState([]);
     let [employees, setEmployees] = useState([]); 
     let [error, setError] = useState(null);
- 
 
     useEffect(() => {
         // fetch the data from the backend
@@ -32,7 +31,15 @@ export function CreateNewTravelPlan({ mode, color, isOpen, onSubmit, onCancel })
                 setEmployees(json);
             })
             .catch(err => console.error(err));
-    }, []);
+
+        if (mode === "edit") {
+            fetch(`/api/travelplans/travelplan/${selectedEvent.id}`, { method: "GET" })
+                .then(data => data.json())
+                .then(json => {
+                    console.log("got editable travel plan", json);
+                });
+        }
+    }, [mode, selectedEvent]);
 
     function handleSubmit(event) {
         event.preventDefault();

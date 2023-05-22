@@ -12,5 +12,6 @@ namespace Infobip.Services
         Task<IEnumerable<Employee>> GetEmployees();
         
         Task<IEnumerable<TravelPlanEvent>> GetTravelPlansEvents();
+        Task<TravelPlan?> GetTravelPlan(int planId);
     }
 }

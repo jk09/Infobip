@@ -16,11 +16,13 @@ export const localizer = momentLocalizer(moment)
 export function Home(props) {
     let [isOpen, setIsOpen] = useState(false);
     let [mode, setMode] = useState(null);
+    let [selectedEvent, setSelectedEvent] = useState(null);
     let [createDisabled, setCreateDisabled] = useState(false);
     let [editDisabled, setEditDisabled] = useState(true);
 
     function onSelectEvent(event) {
         console.log("onSelectEvent", event);
+        setSelectedEvent(event);
         setEditDisabled(false);
     }
 
@@ -85,7 +87,7 @@ export function Home(props) {
 
                 </ButtonToolbar>
 
-                <CreateNewTravelPlan mode={mode} isOpen={isOpen} onCancel={onCancel}  />
+                <CreateNewTravelPlan mode={mode} selectedEvent={selectedEvent} isOpen={isOpen} onCancel={onCancel}  />
 
                 <CarpoolCalendar onSelectEvent={onSelectEvent} onCancel={onCancel} />
             </div>

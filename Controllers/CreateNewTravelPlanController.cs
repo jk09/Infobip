@@ -71,5 +71,20 @@ namespace Infobip.Controllers
         {
             return await _carpoolRepository.GetTravelPlansEvents();
         }
+
+
+        [HttpGet("travelplan/{id}")]
+        public async Task<ActionResult<TravelPlan?>> GetTravelPlan(int id)
+        {
+            var travelPlan= await _carpoolRepository.GetTravelPlan(id);
+            if (travelPlan== null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(travelPlan);
+            }
+        }
     }
 }
