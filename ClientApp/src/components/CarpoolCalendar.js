@@ -19,17 +19,21 @@ const eventStyles = [
 
 
 
-function eventPropGetter(event) {
-    console.log('eventPropGetter of', event);
-    let hash = md5(event.title + event.start + event.end);
-    let idx = parseInt(hash[0], 16)%eventStyles.length;
-    return { style: eventStyles[idx] };
-}
 
 export function CarpoolCalendar({ onSelectEvent }) {
     let [carpoolEvents, setCarpoolEvents] = useState([]);
+    let [selectedEvent, setSelectedEvent] = useState(null);
+
+    function eventPropGetter(event) {
+        console.log('eventPropGetter of', event);
+        let hash = md5(event.title + event.start + event.end);
+        let idx = parseInt(hash[0], 16) % eventStyles.length;
+        return event === selectedEvent ? { style: { ...eventStyles[idx], fontWeight: 'bold' } } : { style: eventStyles[idx] };
+;
+    }
 
     function onSelectEventLocal(event) {
+        setSelectedEvent(event);
         onSelectEvent(event);
 
     }
