@@ -2,6 +2,7 @@ using AutoMapper;
 using Infobip.Infrastructure;
 using Infobip.Models;
 using Infobip.Services;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +15,9 @@ builder.Services.AddControllers()
         opt.AllowInputFormatterExceptionMessages = true;
     });
 
-//builder.Services.AddDbContext<CarpoolDbContext>();
+builder.Services.AddDbContext<CarpoolDbContext>();
+
+
 builder.Services.AddSingleton<IMapper>(svc =>
 {
     var config = new MapperConfiguration(cfg => cfg.AddProfile<MapperProfile>());
@@ -43,5 +46,11 @@ app.MapControllerRoute(
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
+
+using (var context = new CarpoolDbContext())
+{
+    context.Database.EnsureCreated();
+    
+}
 
 app.Run();
