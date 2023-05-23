@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration.Annotations;
-using Infobip.Controllers;
+using Infobip.Infrastructure;
 using Infobip.Models;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.EntityFrameworkCore;

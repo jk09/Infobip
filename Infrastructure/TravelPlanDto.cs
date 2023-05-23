@@ -1,4 +1,4 @@
-﻿namespace Infobip.Controllers
+﻿namespace Infobip.Infrastructure
 {
     public class TravelPlanDto
     {

@@ -1,4 +1,4 @@
-﻿using Infobip.Controllers;
+﻿using Infobip.Infrastructure;
 using Infobip.Models;
 
 namespace Infobip.Services

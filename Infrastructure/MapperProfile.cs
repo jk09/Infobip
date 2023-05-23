@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Infobip.Models;
 
-namespace Infobip.Controllers
+namespace Infobip.Infrastructure
 {
     public class MapperProfile : Profile
     {

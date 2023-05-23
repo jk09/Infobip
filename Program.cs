@@ -1,5 +1,5 @@
 using AutoMapper;
-using Infobip.Controllers;
+using Infobip.Infrastructure;
 using Infobip.Models;
 using Infobip.Services;
 using System.Text.Json.Serialization;

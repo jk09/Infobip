@@ -1,4 +1,4 @@
-﻿namespace Infobip.Services
+﻿namespace Infobip.Infrastructure
 {
     public class TravelPlanValidationException : Exception
     {
