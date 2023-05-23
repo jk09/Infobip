@@ -139,7 +139,7 @@ namespace Infobip.Services
 
                 // save the data
                 var employees = await context.Employees.Where(e => employeeIds.Contains(e.Id)).ToListAsync();
-
+                
                 foreach (var employee in employees)
                 {
                     plan.Employees.Add(employee);

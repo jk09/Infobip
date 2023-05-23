@@ -44,7 +44,7 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
 
         if (mode === "edit") {
             fetch(`/api/travelplans/travelplan/${selectedEvent.id}`, { method: "GET" })
-                .then(data => data.json())
+                .then(data => { console.log("get travelplan", data); return data.json(); })
                 .then(json => {
                     console.log("got editable travel plan", json);
 
