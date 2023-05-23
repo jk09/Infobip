@@ -51,7 +51,7 @@ export function CarpoolCalendar({ onSelectEvent }) {
                 })
                 .then(json => {
                     console.log("travel plan events=", json);
-                    let events = json.map(x => ({ id: x.id, start: x.startDate, end: x.endDate, title: `Carpool ${x.startLocation}->${x.endLocation} w/ ${x.employees}` }));
+                    let events = json.map(x => ({ id: x.id, start: x.startDate, end: x.endDate, title: `${x.startLocation}->${x.endLocation} in ${x.carName}  w/ ${x.employees}` }));
 
                     setCarpoolEvents(events);
                 });
