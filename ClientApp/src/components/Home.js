@@ -46,10 +46,7 @@ export function Home(props) {
 
     }
 
-    function onDelete(event) {
-        window.location.reload();
-    }
-
+ 
     return (
         <div>
             <h1>Infobip Carpool Management</h1>
@@ -86,7 +83,7 @@ export function Home(props) {
 
                 </ButtonToolbar>
 
-                <CreateNewTravelPlan mode={mode} selectedEvent={selectedEvent} isOpen={isOpen} onCancel={onCancel} onDelete={onDelete}  />
+                <CreateNewTravelPlan mode={mode} selectedEvent={selectedEvent} isOpen={isOpen} onCancel={onCancel}  />
 
                 <CarpoolCalendar onSelectEvent={onSelectEvent} onCancel={onCancel} />
             </div>

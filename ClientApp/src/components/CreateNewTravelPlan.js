@@ -4,7 +4,7 @@ import { FaEdit } from 'react-icons/fa';
 
 import moment from 'moment'
 
-export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, onCancel, onDelete }) {
+export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, onCancel }) {
 
     let [cars, setCars] = useState([]);
     let [employees, setEmployees] = useState([]); 
@@ -100,14 +100,14 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
 
             fetch("/api/createnewtravelplan/submit", { method: "POST", body: data })
                 .then(resp => {
-                    console.log('submit fetch response', resp);
+                    console.log('submit fetch - response', resp);
                     if (resp.ok) {
                         window.location.reload();
                     }
                     else {
                         resp.json().then(function (data) {
 
-                            console.log("submit fetch response data", data);
+                            console.log("submit fetch - response data", data);
                             setError(data.detail || JSON.stringify(data.errors));
 
                         });
@@ -118,14 +118,14 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
         } else if (mode === "edit") {
             fetch(`/api/createnewtravelplan/update/${selectedEvent.id}`, { method: "PUT", body: data })
                 .then(resp => {
-                    console.log('submit fetch response', resp);
+                    console.log('submit update - response', resp);
                     if (resp.ok) {
                         window.location.reload();
                     }
                     else {
                         resp.json().then(function (data) {
 
-                            console.log("submit fetch response data", data);
+                            console.log("submit update - response data", data);
                             setError(data.detail || JSON.stringify(data.errors));
 
                         });
@@ -137,7 +137,28 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
     }
 
     function handleDelete(event) {
-        onDelete(event);
+        console.log("handleDelete of", event);
+        if (mode === "edit") {
+            
+            fetch(`/api/createnewtravelplan/delete/${selectedEvent.id}`, { method: "DELETE" })
+                .then(resp => {
+                    console.log("submit delete-response", resp);
+                    if (resp.ok) {
+
+
+                        window.location.reload();
+
+                    } else {
+                        resp.json().then(function (data) {
+                            console.log("submit delete-response data", data);
+                            setError(data.detail || JSON.stringify(data.errors));
+                        });
+                    }
+                })
+                .catch(err => console.error(err));
+
+            
+        }
     }
 
     function onStartLocationChange(e) {
@@ -242,9 +263,12 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
 
                                 </Col>
                                 <Col sm={5} className="d-flex justify-content-end">
-                                    <Button type="submit" color="danger" onClick={handleDelete} >
-                                        Delete
-                                    </Button>
+                                    { mode==="edit" ? (
+                                        <Button  color="danger" onClick={handleDelete} >
+                                            Delete
+                                        </Button>
+                                    ) : null
+                                    }
                                 </Col>
                             </FormGroup>
                             <Alert color="warning" style={{ marginTop: '1rem' }} isOpen={error !== null}>{error}</Alert>
