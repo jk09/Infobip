@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { Button, Form, FormGroup, Label, Input, Col, Collapse, Card, CardBody, FormFeedback,Alert,Badge } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Col, Collapse, Card, CardBody, FormFeedback, Alert, Badge,Modal,ModalHeader,ModalFooter,ModalBody} from 'reactstrap';
 import { FaEdit } from 'react-icons/fa';
 
 import moment from 'moment'
@@ -16,6 +16,7 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
     let [selectedCar, setSelectedCar] = useState("");
     let [selectedEmployees, setSelectedEmployees] = useState([]);
 
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
     useEffect(() => {
         // fetch the data from the backend
@@ -136,8 +137,9 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
         }
     }
 
-    function handleDelete(event) {
-        console.log("handleDelete of", event);
+    
+    function handleDelete() {
+        
         if (mode === "edit") {
             
             fetch(`/api/createnewtravelplan/delete/${selectedEvent.id}`, { method: "DELETE" })
@@ -264,7 +266,7 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
                                 </Col>
                                 <Col sm={5} className="d-flex justify-content-end">
                                     { mode==="edit" ? (
-                                        <Button  color="danger" onClick={handleDelete} >
+                                        <Button  color="danger" onClick={()=>setDeleteModalOpen(true)} >
                                             Delete
                                         </Button>
                                     ) : null
@@ -272,7 +274,21 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
                                 </Col>
                             </FormGroup>
                             <Alert color="warning" style={{ marginTop: '1rem' }} isOpen={error !== null}>{error}</Alert>
-                           
+
+                            <Modal isOpen={deleteModalOpen}>
+                                <ModalHeader>Delete a carpool event</ModalHeader>
+                                <ModalBody>
+                                The selected carpool event will be deleted. Continue?
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button color="primary" onClick={() => { handleDelete(); setDeleteModalOpen(false); } }>
+                                        Delete
+                                    </Button>{' '}
+                                    <Button color="secondary" onClick={()=>setDeleteModalOpen(false)}>
+                                        Cancel
+                                    </Button>
+                                </ModalFooter>
+                            </Modal>
                         </Form>
                     </CardBody>
                 </Card>
