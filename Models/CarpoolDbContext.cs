@@ -27,24 +27,14 @@ namespace Infobip.Models
         {
             base.OnModelCreating(modelBuilder);
 
-          
 
             SeedData(modelBuilder);
 
         }
 
-        private readonly string[] FIRST_NAMES = new string[] {
-    "Alice",
-    "Bob",
-    "Charlie",
-    "David",
-    "Emma",
-    "Frank",
-    "Grace",
-    "Henry",
-    "Isabel",
-    "Jack"
-};
+        
+
+   
 
         private readonly string[] CAR_MODELS = new string[] {
     "Toyota Corolla",
@@ -126,7 +116,7 @@ namespace Infobip.Models
             var count = CAR_MODELS.Length;
             for (int i = 0; i < count; i++)
             {
-                var carName = CAR_MODELS[i] + " of " + FIRST_NAMES[i];
+                var carName = COLORS[i] + " " + CAR_MODELS[i];
                 var car = new Car() { Id = i + 1, Name = carName, Color = COLORS[i], CarType = CAR_MODELS[i], NumberSeats = rnd.Next(2, 7), Plate = LICENSE_PLATES[i] };
                 yield return car;
             }
