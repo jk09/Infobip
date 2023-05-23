@@ -27,7 +27,7 @@ export function Home(props) {
 
     function onButtonCreateNewTravelPlan() {
         setEditDisabled(true);
-
+        setSelectedEvent(null);
         setMode("new");
         setIsOpen(true);
     }
