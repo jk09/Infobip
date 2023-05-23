@@ -6,7 +6,7 @@ namespace Infobip.Services
     public interface ICarpoolRepository
     {
         Task AddNewTravelPlan(TravelPlanDto plan);
-        Task DeleteTravelPlan(TravelPlanDto plan);
+        Task DeleteTravelPlan(int travelPlanId);
         Task UpdateTravelPlan(TravelPlanDto plan);
         Task<IEnumerable<Car>> GetCars();
         Task<IEnumerable<Employee>> GetEmployees();

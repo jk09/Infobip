@@ -42,12 +42,12 @@ export function Home(props) {
     }
 
     function onCancel(event) {
-        //setIsOpen(false);
-
-        //setCreateDisabled(false);
-        //setEditDisabled(true);
         window.location.reload();
 
+    }
+
+    function onDelete(event) {
+        window.location.reload();
     }
 
     return (
@@ -86,7 +86,7 @@ export function Home(props) {
 
                 </ButtonToolbar>
 
-                <CreateNewTravelPlan mode={mode} selectedEvent={selectedEvent} isOpen={isOpen} onCancel={onCancel}  />
+                <CreateNewTravelPlan mode={mode} selectedEvent={selectedEvent} isOpen={isOpen} onCancel={onCancel} onDelete={onDelete}  />
 
                 <CarpoolCalendar onSelectEvent={onSelectEvent} onCancel={onCancel} />
             </div>

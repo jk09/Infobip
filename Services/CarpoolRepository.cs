@@ -156,9 +156,16 @@ namespace Infobip.Services
             
         }
 
-        public async Task DeleteTravelPlan(TravelPlanDto plan)
+        public async Task DeleteTravelPlan(int travelPlanId)
         {
-            throw new NotImplementedException();
+            using (var context = new CarpoolDbContext())
+            {
+                var existingPlan = await context.TravelPlans.FindAsync(travelPlanId);
+                Debug.Assert(existingPlan!= null);
+                context.TravelPlans.Remove(existingPlan);
+
+                await context.SaveChangesAsync();
+            }
         }
 
         public async Task UpdateTravelPlan(TravelPlanDto dto)

@@ -4,7 +4,7 @@ import { FaEdit } from 'react-icons/fa';
 
 import moment from 'moment'
 
-export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, onCancel }) {
+export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, onCancel, onDelete }) {
 
     let [cars, setCars] = useState([]);
     let [employees, setEmployees] = useState([]); 
@@ -136,6 +136,10 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
         }
     }
 
+    function handleDelete(event) {
+        onDelete(event);
+    }
+
     function onStartLocationChange(e) {
         setStartLocation(e.target.value);
     }
@@ -226,18 +230,25 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
 
 
                             </FormGroup>
-
-                            <div>
-                                <Button type="submit" color="success" onClick={onSubmit }>
-                                    Submit
-                                </Button>
+                            <FormGroup row>
+                                <Col sm={2}>
+                                    <Button type="submit" color="success" onClick={onSubmit}>
+                                        Submit
+                                    </Button>
                                     {" "}
-                                <Button type="reset" color="secondary" onClick={onCancel }>
-                                    Cancel
-                                </Button>
-                            </div>
+                                    <Button type="reset" color="secondary" onClick={onCancel}>
+                                        Cancel
+                                    </Button>
+
+                                </Col>
+                                <Col sm={5} className="d-flex justify-content-end">
+                                    <Button type="submit" color="danger" onClick={handleDelete} >
+                                        Delete
+                                    </Button>
+                                </Col>
+                            </FormGroup>
                             <Alert color="warning" style={{ marginTop: '1rem' }} isOpen={error !== null}>{error}</Alert>
-                          
+                           
                         </Form>
                     </CardBody>
                 </Card>

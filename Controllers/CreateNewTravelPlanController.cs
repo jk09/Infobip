@@ -68,7 +68,19 @@ namespace Infobip.Controllers
             }
         }
 
-
+        [HttpDelete("delete/{id}")]
+        public  async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                await _carpoolRepository.DeleteTravelPlan(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message, statusCode: 500);
+            }
+        }
     }
 
     [ApiController]
