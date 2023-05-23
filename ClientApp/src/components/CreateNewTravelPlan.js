@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { Button, Form, FormGroup, Label, Input, Col, Collapse, Card, CardBody, FormFeedback,Alert } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Col, Collapse, Card, CardBody, FormFeedback,Alert,Badge } from 'reactstrap';
+import { FaEdit } from 'react-icons/fa';
 
 import moment from 'moment'
 
@@ -175,6 +176,10 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
                 <Card>
                     <CardBody>
                         <Form onSubmit={handleSubmit}>
+
+                            {(mode === "new") ? <Badge color="primary">Create a new carpool event</Badge> : <Badge color="secondary">Edit an existing  carpool event</Badge>}
+                                
+                            
 
                             <FormGroup row>
                                 <Label for="startLocation" sm={2}>Start location</Label>
