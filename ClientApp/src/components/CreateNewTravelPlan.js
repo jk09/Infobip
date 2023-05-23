@@ -236,7 +236,7 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
                                 <Label for="car" sm={2}>Car</Label>
                                 <Col sm={5}>
                                     <Input id="car" type="select" value={selectedCar} onChange={onSelectedCarChanged }>
-                                        {cars.map(car => <option key={car.id} id={car.id} value={car.id }>{ car.name }</option>)}
+                                        {cars.map(car => <option key={car.id} id={car.id} value={car.id }>{ `${car.name} (${car.numberSeats} seats)` }</option>)}
                                    </Input>
                                 </Col>
                             </FormGroup>

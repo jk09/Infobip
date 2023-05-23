@@ -119,8 +119,12 @@ namespace Infobip.Services
                 }
             }
 
-            var employees = await context.Employees.Where(e => employeeIds.Contains(e.Id)).ToListAsync();
-            Assert(employees.Any(x => x.IsDriver), "At least one employee must be a driver");
+            var employees = await context.Employees.Where(e => employeeIds.Contains(e.Id)).Select(x=>x.IsDriver).ToListAsync();
+            Assert(employees.Any(x => x), "At least one employee must be a driver");
+
+            var numSeats = await context.Cars.Where(x => x.Id == dto.CarId).Select(x => x.NumberSeats).FirstAsync();
+
+            Assert(numSeats >= employeeIds.Count, "The number of passengers cannot exceed the number of car seats");
 
         }
 
