@@ -3,6 +3,7 @@ using System;
 using Infobip.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infobip.Migrations
 {
     [DbContext(typeof(CarpoolDbContext))]
-    partial class CarpoolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230523085354_TravelPlan_Employee_ManyToMany")]
+    partial class TravelPlan_Employee_ManyToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
