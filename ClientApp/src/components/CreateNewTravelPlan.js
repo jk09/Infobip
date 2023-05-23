@@ -90,7 +90,7 @@ export function CreateNewTravelPlan({ mode, selectedEvent,  isOpen, onSubmit, on
         data.append("StartLocation", startLocation);
         data.append("EndLocation", endLocation);
         data.append("StartDate", startDate);
-        data.append("EndDate", endDate);
+        data.append("EndDate", endDate + "T23:59:59");
 
         data.append("CarId", carId);
         data.append("EmployeeIds", JSON.stringify(empIds));
