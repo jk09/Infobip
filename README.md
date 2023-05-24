@@ -2,7 +2,7 @@
 
 ## Installation
 
-- Download and unpack the file from ... *to be specified*
+- Download and unpack the file from `Initial release`
 - In the directory of the unpacked files run the program `Infobip.exe`
 - The server application will start and present a console similar to the following 
 
