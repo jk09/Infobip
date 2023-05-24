@@ -127,12 +127,15 @@ namespace Infobip.Models
             var rnd = new Random();
 
             var count = EMPLOYEE_NAMES.Length;
+            var employees = new List<Employee>();
             for (int i = 0; i < count; i++)
             {
                 var employee = new Employee() { Id = i + 1, IsDriver = rnd.Next(2) == 0 ? false : true, Name = EMPLOYEE_NAMES[i] };
-                yield return employee;
+                employees.Add(employee);
             }
 
+            employees[rnd.Next(employees.Count - 1)].IsDriver = true;
+            return employees;
         }
     }
 }
